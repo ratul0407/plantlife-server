@@ -1,6 +1,8 @@
 require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
+const { ObjectId } = require("mongodb");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const app = express();
 
@@ -10,7 +12,6 @@ const port = process.env.PORT || 9000;
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@ratul.gtek0.mongodb.net/?retryWrites=true&w=majority&appName=Ratul`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -84,6 +85,14 @@ async function run() {
           },
         ])
         .toArray();
+      res.send(result);
+    });
+
+    //get an individual plant
+    app.get("/plant/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await plantsCollection.findOne(query);
       res.send(result);
     });
   } finally {
