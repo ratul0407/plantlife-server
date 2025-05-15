@@ -12,7 +12,7 @@ const corsOption = {
   origin: [
     "http://localhost:5173",
     "http://localhost:5174",
-    "https://https://plantlife-server.vercel.app",
+    "https://plantlife-mu.vercel.app",
   ],
   credentials: true,
   optionalSuccessStatus: 200,
@@ -35,10 +35,10 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    // await client.db("admin").command({ ping: 1 });
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!"
+    // );
 
     const database = client.db("plantLife");
     const plantsCollection = database.collection("plants");
@@ -49,24 +49,7 @@ async function run() {
           {
             $project: {
               name: 1,
-              price: {
-                $let: {
-                  vars: {
-                    matchedVariant: {
-                      $first: {
-                        $filter: {
-                          input: "$variants",
-                          as: "v",
-                          cond: {
-                            $eq: ["$$v.id", "$defaultVariant"],
-                          },
-                        },
-                      },
-                    },
-                  },
-                  in: "$$matchedVariant.price",
-                },
-              },
+              price: "$basePrice",
               img: {
                 $let: {
                   vars: {
@@ -74,8 +57,8 @@ async function run() {
                       $first: {
                         $filter: {
                           input: "$variants",
-                          as: "v",
-                          cond: { $eq: ["$$v.id", "$defaultVariant"] },
+                          as: "variant",
+                          cond: { $eq: ["$$variant.id", "$defaultVariant"] },
                         },
                       },
                     },
@@ -84,16 +67,30 @@ async function run() {
                 },
               },
               second_img: {
-                $cond: {
-                  if: { $gte: [{ $size: "$variants" }, 2] },
-                  then: { $arrayElemAt: ["$variants.img", 1] },
-                  else: { $arrayElemAt: ["$more_images", 0] },
+                $let: {
+                  vars: {
+                    otherVariants: {
+                      $filter: {
+                        input: "$variants",
+                        as: "variant",
+                        cond: { $ne: ["$$variant.id", "$defaultVariant"] },
+                      },
+                    },
+                  },
+                  in: {
+                    $cond: {
+                      if: { $gt: [{ $size: "$$otherVariants" }, 0] },
+                      then: { $first: "$$otherVariants.img" },
+                      else: { $arrayElemAt: ["$more_images", 0] },
+                    },
+                  },
                 },
               },
             },
           },
         ])
         .toArray();
+
       res.send(result);
     });
 
@@ -105,8 +102,6 @@ async function run() {
       res.send(result);
     });
   } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
   }
 }
 run().catch(console.dir);
