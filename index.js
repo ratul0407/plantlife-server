@@ -1,6 +1,8 @@
 require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const { ObjectId } = require("mongodb");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
@@ -20,7 +22,7 @@ const corsOption = {
 //middlewares
 app.use(cors(corsOption));
 app.use(express.json());
-
+app.use(cookieParser());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@ratul.gtek0.mongodb.net/?retryWrites=true&w=majority&appName=Ratul`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -34,16 +36,25 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Send a ping to confirm a successful connection
-    // await client.db("admin").command({ ping: 1 });
-    // console.log(
-    //   "Pinged your deployment. You successfully connected to MongoDB!"
-    // );
-
     const database = client.db("plantLife");
     const plantsCollection = database.collection("plants");
 
-    app.get("/all-plants", async (req, res) => {
+    //auth related apis
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.JWT_SECRET, {
+        expiresIn: "3hr",
+      });
+
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_DEV === "production",
+          sameSite: process.env.NODE_DEV === "production" ? "none" : "strict",
+        })
+        .send({ success: true });
+    });
+    app.get("/plants", async (req, res) => {
       const result = await plantsCollection
         .aggregate([
           {
