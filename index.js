@@ -38,7 +38,7 @@ async function run() {
   try {
     const database = client.db("plantLife");
     const plantsCollection = database.collection("plants");
-
+    const usersCollection = database.collection("users");
     //auth related apis
     app.post("/jwt", async (req, res) => {
       const user = req.body;
@@ -53,6 +53,27 @@ async function run() {
           sameSite: process.env.NODE_DEV === "production" ? "none" : "strict",
         })
         .send({ success: true });
+    });
+
+    //users route
+
+    app.post("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = req.body;
+
+      const alreadyExist = await usersCollection.findOne(query);
+
+      if (alreadyExist) {
+        return res.send(alreadyExist);
+      }
+
+      const result = await usersCollection.insertOne({
+        ...user,
+        role: "customer",
+        timestamp: Date.now(),
+      });
+      res.send(result);
     });
     app.get("/plants", async (req, res) => {
       const result = await plantsCollection
