@@ -75,6 +75,19 @@ async function run() {
       });
       res.send(result);
     });
+
+    //logout
+    app.get("/logout", async (req, res) => {
+      try {
+        res.clearCookie("token", {
+          maxAge: 0,
+          secure: process.env.NODE_DEV === "production",
+          sameSite: process.env.NODE_DEV === "production" ? "none" : "strict",
+        });
+      } catch (err) {
+        res.status(500).send(err);
+      }
+    });
     app.get("/plants", async (req, res) => {
       const result = await plantsCollection
         .aggregate([
