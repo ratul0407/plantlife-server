@@ -24,8 +24,8 @@ interface IOrder {
 export interface IUser {
   name: string;
   email: string;
-  phone?: string;
   picture?: string;
+  phone?: string;
   password?: string;
   isVerified?: string;
   isDeleted?: string;
