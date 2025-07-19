@@ -13,7 +13,7 @@ interface IPlantVariant {
   price: number;
   inStock: boolean;
   stock: boolean;
-  image: string[];
+  image: string;
   sku: string;
 }
 interface IStats {
