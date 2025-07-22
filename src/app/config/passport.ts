@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { User } from "../modules/user/user.model";
-import bcryptjs from "bcryptjs"
+import bcryptjs from "bcryptjs";
 passport.use(
   new LocalStrategy(
     { usernameField: "email", passwordField: "password" },
@@ -16,7 +16,7 @@ passport.use(
       if (isGoogleAuthenticated) {
         done("You are authenticated with google. Please login with google");
       }
-      const isPasswordMatched = 
+      // const isPasswordMatched = bcryptjs.compare(isUserExists.password, password)
     }
   )
 );
