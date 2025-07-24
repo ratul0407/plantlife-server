@@ -14,3 +14,6 @@ const createUser = catchAsync(
     });
   }
 );
+export const userController = {
+  createUser,
+};
