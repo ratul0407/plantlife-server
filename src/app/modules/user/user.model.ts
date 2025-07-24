@@ -25,9 +25,14 @@ const userSchema = new Schema<IUser>(
     coins: { type: Number, default: 0 },
     role: { type: String, enum: Object.values(Role), default: Role.USER },
     auths: [AuthProviderSchema],
-    reviews: { type: Schema.Types.ObjectId, ref: "Reviews" },
-    recentlyViewed: { type: Schema.Types.ObjectId, ref: "Plants" },
-    questions: { type: Schema.Types.ObjectId, ref: "Questions" },
+    cart: { type: [Schema.Types.ObjectId], ref: "Plants", default: [] },
+    reviews: { type: [Schema.Types.ObjectId], ref: "Reviews", default: [] },
+    recentlyViewed: {
+      type: [Schema.Types.ObjectId],
+      ref: "Plants",
+      default: [],
+    },
+    questions: { type: [Schema.Types.ObjectId], ref: "Questions", default: [] },
   },
   {
     timestamps: true,

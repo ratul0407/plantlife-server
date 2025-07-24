@@ -15,12 +15,7 @@ interface ICart {
   plant: Types.ObjectId;
   quantity: number;
 }
-interface IOrder {
-  all?: Types.ObjectId[];
-  delivered?: Types.ObjectId[];
-  pending?: Types.ObjectId[];
-  cancelled?: Types.ObjectId[];
-}
+
 export interface IUser {
   name: string;
   email: string;
@@ -31,7 +26,6 @@ export interface IUser {
   isDeleted?: string;
   isBlocked?: string;
   wishlist?: Types.ObjectId[];
-  orders?: IOrder;
   coins?: number;
   cart?: ICart[];
   role: Role;
