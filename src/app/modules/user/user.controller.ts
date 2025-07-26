@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { userServices } from "./user.service";
@@ -14,6 +15,18 @@ const createUser = catchAsync(
     });
   }
 );
+const credentialsLogin = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userServices.credentialsLogin(req.body);
+    sendResponse(res, {
+      success: true,
+      statusCode: 201,
+      message: "User logged in successfully!",
+      data: result,
+    });
+  }
+);
 export const userController = {
   createUser,
+  credentialsLogin,
 };
