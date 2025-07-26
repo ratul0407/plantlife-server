@@ -46,7 +46,7 @@ const credentialsLogin = async (payload: Partial<IUser>) => {
     email: isUserExists.email,
     role: isUserExists.role,
   };
-  const accessToken = jwt.sign(jwtPayload, "Secret", {
+  const accessToken = jwt.sign(jwtPayload, envVars.JWT_SECRET, {
     expiresIn: "1h",
   });
   return {
