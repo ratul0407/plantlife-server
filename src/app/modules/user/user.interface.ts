@@ -22,9 +22,9 @@ export interface IUser {
   picture?: string;
   phone?: string;
   password?: string;
-  isVerified?: string;
-  isDeleted?: string;
-  isBlocked?: string;
+  isVerified?: boolean;
+  isDeleted?: boolean;
+  isBlocked?: boolean;
   wishlist?: Types.ObjectId[];
   coins?: number;
   cart?: ICart[];
