@@ -10,5 +10,6 @@ router.post(
   validateRequest(createUserZodSchema),
   userController.createUser
 );
+router.get("/all-users", userController.getAllUsers);
 router.post("/login", userController.credentialsLogin);
 export const UserRoutes = router;

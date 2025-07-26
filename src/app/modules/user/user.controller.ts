@@ -26,7 +26,19 @@ const credentialsLogin = catchAsync(
     });
   }
 );
+const getAllUsers = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userServices.getAllUsers();
+    sendResponse(res, {
+      success: true,
+      statusCode: 201,
+      message: "All users retrieved successfully!",
+      data: result,
+    });
+  }
+);
 export const userController = {
   createUser,
   credentialsLogin,
+  getAllUsers,
 };

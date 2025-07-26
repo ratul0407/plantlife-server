@@ -4,6 +4,8 @@ import { IAuthProvider, IUser } from "./user.interface";
 import { User } from "./user.model";
 import bcryptjs from "bcryptjs";
 import httpStatus from "http-status-codes";
+
+import jwt from "jsonwebtoken";
 const createUser = async (payload: Partial<IUser>) => {
   const { email, password, ...rest } = payload;
   const hashedPassword = await bcryptjs.hash(
@@ -39,11 +41,23 @@ const credentialsLogin = async (payload: Partial<IUser>) => {
     throw new AppError(httpStatus.BAD_REQUEST, "Incorrect Password");
   }
 
-  return {
+  const jwtPayload = {
+    userId: isUserExists._id,
     email: isUserExists.email,
+    role: isUserExists.role,
   };
+  const accessToken = jwt.sign(jwtPayload, "Secret", {
+    expiresIn: "1h",
+  });
+  return {
+    accessToken,
+  };
+};
+const getAllUsers = async () => {
+  return User.find({});
 };
 export const userServices = {
   createUser,
   credentialsLogin,
+  getAllUsers,
 };
