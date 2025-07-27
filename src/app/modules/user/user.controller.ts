@@ -8,6 +8,14 @@ import { JwtPayload } from "jsonwebtoken";
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await userServices.createUser(req.body);
+    res.cookie("accessToken", result.accessToken, {
+      httpOnly: true,
+      secure: false,
+    });
+    res.cookie("refreshToken", result.refreshToken, {
+      httpOnly: true,
+      secure: false,
+    });
     sendResponse(res, {
       success: true,
       statusCode: 201,

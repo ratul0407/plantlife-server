@@ -1,5 +1,6 @@
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
+import { createUserTokens } from "../../utils/userTokens";
 import { IAuthProvider, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import bcryptjs from "bcryptjs";
@@ -24,7 +25,12 @@ const createUser = async (payload: Partial<IUser>) => {
     auths: [authProvider],
     ...rest,
   });
-  return user;
+  const { accessToken, refreshToken } = createUserTokens(user);
+  return {
+    user,
+    accessToken,
+    refreshToken,
+  };
 };
 
 const getAllUsers = async () => {
