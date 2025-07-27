@@ -12,12 +12,13 @@ export const checkAuth =
       }
       const verifiedToken = jwt.verify(
         accessToken,
-        envVars.JWT_SECRET
+        envVars.JWT_ACCESS_SECRET
       ) as JwtPayload;
 
       if (!authRole.includes(verifiedToken.role)) {
         throw new AppError(403, "You are not permitted to view this route");
       }
+      req.user = verifiedToken;
       console.log(verifiedToken);
       next();
     } catch (error) {
