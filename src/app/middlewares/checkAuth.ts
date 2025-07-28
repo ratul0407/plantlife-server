@@ -2,9 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import AppError from "../errorHelpers/AppError";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../config/env";
+import { User } from "../modules/user/user.model";
+import httpStatus from "http-status-codes";
 export const checkAuth =
   (...authRole: string[]) =>
-  (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const accessToken = req.headers.authorization;
       if (!accessToken) {
@@ -14,6 +16,11 @@ export const checkAuth =
         accessToken,
         envVars.JWT_ACCESS_SECRET
       ) as JwtPayload;
+
+      const isUserExists = await User.findOne({ email: verifiedToken.email });
+      if (!isUserExists) {
+        throw new AppError(httpStatus.BAD_REQUEST, "User does not exists");
+      }
 
       if (!authRole.includes(verifiedToken.role)) {
         throw new AppError(403, "You are not permitted to view this route");

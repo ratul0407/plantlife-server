@@ -62,7 +62,32 @@ const getNewAccessToken = async (refreshToken: string) => {
   };
 };
 
-export const authServices = {
+const resetPassword = async (
+  oldPassword: string,
+  newPassword: string,
+  decodedToken: JwtPayload
+) => {
+  const user = await User.findById(decodedToken.userId);
+  const isOldPasswordMatched = await bcryptjs.compare(
+    oldPassword,
+    user?.password as string
+  );
+
+  if (!isOldPasswordMatched) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Old password does not match");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  user!.password = await bcryptjs.hash(
+    newPassword,
+    Number(envVars.BCRYPT_SALT_ROUND)
+  );
+  user?.save();
+
+  return null;
+};
+export const AuthServices = {
   credentialsLogin,
   getNewAccessToken,
+  resetPassword,
 };
