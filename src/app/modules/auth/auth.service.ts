@@ -61,6 +61,7 @@ const getNewAccessToken = async (refreshToken: string) => {
     accessToken,
   };
 };
+
 export const authServices = {
   credentialsLogin,
   getNewAccessToken,
