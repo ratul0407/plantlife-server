@@ -5,6 +5,7 @@ import { createUserZodSchema, updateUserZodSchema } from "./user.validation";
 
 import { checkAuth } from "../../middlewares/checkAuth";
 import { Role } from "./user.interface";
+import { AuthController } from "../auth/auth.controller";
 const router = Router();
 
 router.post(
@@ -22,4 +23,5 @@ router.patch(
   validateRequest(updateUserZodSchema),
   userController.updateUser
 );
+router.get("/me", checkAuth(...Object.values(Role)), AuthController.getMe);
 export const UserRoutes = router;

@@ -11,6 +11,7 @@ import { createUserTokens } from "../../utils/userTokens";
 import { setAuthCookie } from "../../utils/setAuthCookie";
 import { envVars } from "../../config/env";
 import passport from "passport";
+import { userServices } from "../user/user.service";
 const credentialsLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate("local", async (err: any, user: any, info: any) => {
@@ -133,10 +134,23 @@ const googleCallbackController = catchAsync(
     res.redirect(`${envVars.FRONTEND_URL}/${redirectTo}`);
   }
 );
+
+const getMe = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // const result = await userServices.getMe()
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "User retrieved successfully!",
+      data: result,
+    });
+  }
+);
 export const AuthController = {
   credentialsLogin,
   getNewAccessToken,
   logOut,
   resetPassword,
   googleCallbackController,
+  getMe,
 };
