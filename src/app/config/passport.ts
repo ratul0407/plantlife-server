@@ -12,7 +12,56 @@ import bcryptjs from "bcryptjs";
 // import AppError from "../errorHelpers/appError";
 import httpStatus from "http-status-codes";
 import AppError from "../errorHelpers/AppError";
-import { Role } from "../modules/user/user.interface";
+import { IsActive, Role } from "../modules/user/user.interface";
+// passport.use(
+//   new LocalStrategy(
+//     {
+//       usernameField: "email",
+//       passwordField: "password",
+//     },
+//     async (email: string, password: string, done) => {
+//       console.log(email, password);
+//       try {
+//         const isUserExists = await User.findOne({ email });
+//         console.log(isUserExists, "from line 23");
+//         if (!isUserExists) {
+//           return done("User does not exist");
+//         }
+
+//         if (isUserExists.isBlocked) {
+//           done(`User is blocked`);
+//         }
+
+//         if (!isUserExists.isVerified) {
+//           done(" User is not verified");
+//         }
+//         if (isUserExists.isDeleted) {
+//           throw new AppError(httpStatus.BAD_REQUEST, "User is deleted");
+//         }
+//         const isGoogleAuthenticated = isUserExists.auths.some(
+//           (providerObjects) => providerObjects.provider === "google"
+//         );
+//         if (isGoogleAuthenticated && !isUserExists.password) {
+//           return done(
+//             "You have authenticated with google. If you want to login with password, first login with google and then set a password to login with a password for next time"
+//           );
+//         }
+//         const isPasswordMatched = bcryptjs.compare(
+//           password as string,
+//           isUserExists.password as string
+//         );
+
+//         if (!isPasswordMatched) {
+//           return done(null, false, { message: "Password does not match" });
+//         }
+//         return done(null, isUserExists);
+//       } catch (error) {
+//         done(error);
+//       }
+//     }
+//   )
+// );
+
 passport.use(
   new LocalStrategy(
     {
@@ -20,43 +69,34 @@ passport.use(
       passwordField: "password",
     },
     async (email: string, password: string, done) => {
-      console.log(email, password);
       try {
-        const isUserExists = await User.findOne({ email });
-        console.log(isUserExists, "from line 23");
-        if (!isUserExists) {
-          return done("User does not exist");
+        const userExists = await User.findOne({ email });
+        if (!userExists) {
+          return done(null, false, { message: "User does not exist" });
         }
 
-        if (isUserExists.isBlocked) {
-          done(`User is blocked`);
-        }
-
-        if (!isUserExists.isVerified) {
-          done(" User is not verified");
-        }
-        if (isUserExists.isDeleted) {
-          throw new AppError(httpStatus.BAD_REQUEST, "User is deleted");
-        }
-        const isGoogleAuthenticated = isUserExists.auths.some(
-          (providerObjects) => providerObjects.provider === "google"
+        const userIsGoogleAuthenticated = userExists.auths.some(
+          (providerObj) => providerObj.provider === "google"
         );
-        if (isGoogleAuthenticated && !isUserExists.password) {
-          return done(
-            "You have authenticated with google. If you want to login with password, first login with google and then set a password to login with a password for next time"
-          );
+
+        if (userIsGoogleAuthenticated) {
+          return done(null, false, {
+            message: "This email is Logged in with google.",
+          });
         }
-        const isPasswordMatched = bcryptjs.compare(
+        const passwordMatched = await bcryptjs.compare(
           password as string,
-          isUserExists.password as string
+          userExists.password as string
         );
 
-        if (!isPasswordMatched) {
-          return done(null, false, { message: "Password does not match" });
+        if (!passwordMatched) {
+          throw new AppError(httpStatus.BAD_REQUEST, "Incorrect Password");
         }
-        return done(null, isUserExists);
+
+        return done(null, userExists);
       } catch (error) {
-        done(error);
+        console.log(error);
+        return done(error);
       }
     }
   )
@@ -98,7 +138,10 @@ passport.use(
           });
         }
 
-        if (isUserExists && isUserExists.isBlocked) {
+        if (
+          (isUserExists && isUserExists.isActive === IsActive.BLOCKED) ||
+          isUserExists.isActive === IsActive.INACTIVE
+        ) {
           return done(null, false, {
             message: `User is blocked`,
           });

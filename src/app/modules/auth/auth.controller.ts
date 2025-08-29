@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
@@ -9,25 +10,50 @@ import { JwtPayload } from "jsonwebtoken";
 import { createUserTokens } from "../../utils/userTokens";
 import { setAuthCookie } from "../../utils/setAuthCookie";
 import { envVars } from "../../config/env";
+import passport from "passport";
 const credentialsLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const payload = req.body;
-    const result = await AuthServices.credentialsLogin(payload);
+    passport.authenticate("local", async (err: any, user: any, info: any) => {
+      if (err) {
+        return next(err);
+      }
 
-    res.cookie("accessToken", result.accessToken, {
-      httpOnly: true,
-      secure: false,
-    });
-    res.cookie("refreshToken", result.refreshToken, {
-      httpOnly: true,
-      secure: false,
-    });
-    sendResponse(res, {
-      success: true,
-      statusCode: 201,
-      message: "Logged in successfully!",
-      data: result,
-    });
+      if (!user) {
+        return next(new AppError(401, "User does not exist"));
+      }
+
+      const userTokens = await createUserTokens(user);
+
+      const { password: pass, ...rest } = user.toObject();
+      setAuthCookie(res, userTokens);
+      sendResponse(res, {
+        success: true,
+        statusCode: 201,
+        message: "Logged in successfully!",
+        data: {
+          accessToken: userTokens.accessToken,
+          refreshToken: userTokens.refreshToken,
+          user: rest,
+        },
+      });
+    })(req, res, next);
+
+    //   const payload = req.body;
+    //   const result = await AuthServices.credentialsLogin(payload);
+    //   res.cookie("accessToken", result.accessToken, {
+    //     httpOnly: true,
+    //     secure: false,
+    //   });
+    //   res.cookie("refreshToken", result.refreshToken, {
+    //     httpOnly: true,
+    //     secure: false,
+    //   });
+    //   sendResponse(res, {
+    //     success: true,
+    //     statusCode: 201,
+    //     message: "Logged in successfully!",
+    //     data: result,
+    //   });
   }
 );
 

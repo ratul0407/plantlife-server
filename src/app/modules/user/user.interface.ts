@@ -16,6 +16,11 @@ interface ICart {
   quantity: number;
 }
 
+export enum IsActive {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  BLOCKED = "BLOCKED",
+}
 export interface IUser {
   _id?: Types.ObjectId;
   name: string;
@@ -24,8 +29,8 @@ export interface IUser {
   phone?: string;
   password?: string;
   isVerified?: boolean;
+  isActive: IsActive;
   isDeleted?: boolean;
-  isBlocked?: boolean;
   wishlist?: Types.ObjectId[];
   coins?: number;
   cart?: ICart[];
