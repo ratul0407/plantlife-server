@@ -137,7 +137,8 @@ const googleCallbackController = catchAsync(
 
 const getMe = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    // const result = await userServices.getMe()
+    const { userId } = req.user as JwtPayload;
+    const result = await userServices.getMe(userId);
     sendResponse(res, {
       statusCode: 201,
       success: true,
