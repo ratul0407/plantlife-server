@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
-enum Category {
+export enum Category {
   EASY_CARE = "EASY_CARE",
   HANGING = "HANGING",
   AIR_PURIFYING = "AIR_PURIFYING",
@@ -8,7 +8,7 @@ enum Category {
   LOW_LIGHT = "LOW_LIGHT",
   FLOWERING = "FLOWERING",
 }
-interface IPlantVariant {
+export interface IPlantVariant {
   variantName: string;
   price: number;
   inStock: boolean;
@@ -16,7 +16,7 @@ interface IPlantVariant {
   image: string;
   sku: string;
 }
-interface IStats {
+export interface IStats {
   rating?: number;
   wishlist?: number;
   cart?: number;
@@ -32,7 +32,7 @@ export interface IPlant {
   mainImage: string[];
   variant: [IPlantVariant];
   additionalImages: string[];
-  tags?: string;
+  tags?: string[];
   careInstructions?: string;
   reviews?: Types.ObjectId[];
   stats: IStats;

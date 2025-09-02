@@ -24,7 +24,7 @@ const credentialsLogin = catchAsync(
       }
 
       const userTokens = await createUserTokens(user);
-
+      console.log(userTokens);
       const { password: pass, ...rest } = user.toObject();
       setAuthCookie(res, userTokens);
       sendResponse(res, {
@@ -38,23 +38,6 @@ const credentialsLogin = catchAsync(
         },
       });
     })(req, res, next);
-
-    //   const payload = req.body;
-    //   const result = await AuthServices.credentialsLogin(payload);
-    //   res.cookie("accessToken", result.accessToken, {
-    //     httpOnly: true,
-    //     secure: false,
-    //   });
-    //   res.cookie("refreshToken", result.refreshToken, {
-    //     httpOnly: true,
-    //     secure: false,
-    //   });
-    //   sendResponse(res, {
-    //     success: true,
-    //     statusCode: 201,
-    //     message: "Logged in successfully!",
-    //     data: result,
-    //   });
   }
 );
 
@@ -82,13 +65,13 @@ const logOut = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     res.clearCookie("accessToken", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     });
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     });
     sendResponse(res, {
       success: true,
