@@ -1,5 +1,3 @@
-import { Types } from "mongoose";
-
 export enum Category {
   EASY_CARE = "EASY_CARE",
   HANGING = "HANGING",
@@ -29,13 +27,9 @@ export interface IPlant {
   basePrice: number;
   inStock: boolean;
   stock: number;
-  mainImage: string[];
   variant: [IPlantVariant];
   additionalImages: string[];
   tags?: string[];
   careInstructions?: string;
-  reviews?: Types.ObjectId[];
-  stats: IStats;
-  question?: Types.ObjectId[];
   discount?: number;
 }

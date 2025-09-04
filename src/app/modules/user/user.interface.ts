@@ -37,6 +37,5 @@ export interface IUser {
   role: Role;
   auths: IAuthProvider[];
   reviews?: Types.ObjectId[];
-  recentlyViewed?: Types.ObjectId[];
   questions?: Types.ObjectId[];
 }

@@ -43,6 +43,7 @@ const credentialsLogin = (0, catchAsync_1.catchAsync)((req, res, next) => __awai
             return next(new AppError_1.default(401, "User does not exist"));
         }
         const userTokens = yield (0, userTokens_1.createUserTokens)(user);
+        console.log(userTokens);
         const _a = user.toObject(), { password: pass } = _a, rest = __rest(_a, ["password"]);
         (0, setAuthCookie_1.setAuthCookie)(res, userTokens);
         (0, sendResponse_1.sendResponse)(res, {
@@ -56,22 +57,6 @@ const credentialsLogin = (0, catchAsync_1.catchAsync)((req, res, next) => __awai
             },
         });
     }))(req, res, next);
-    //   const payload = req.body;
-    //   const result = await AuthServices.credentialsLogin(payload);
-    //   res.cookie("accessToken", result.accessToken, {
-    //     httpOnly: true,
-    //     secure: false,
-    //   });
-    //   res.cookie("refreshToken", result.refreshToken, {
-    //     httpOnly: true,
-    //     secure: false,
-    //   });
-    //   sendResponse(res, {
-    //     success: true,
-    //     statusCode: 201,
-    //     message: "Logged in successfully!",
-    //     data: result,
-    //   });
 }));
 const getNewAccessToken = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const refreshToken = req.cookies.refreshToken;

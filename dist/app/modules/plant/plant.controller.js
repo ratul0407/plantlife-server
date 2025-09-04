@@ -22,6 +22,29 @@ const createPlant = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(v
         data: result,
     });
 }));
+const getAllPlants = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield plant_service_1.PlantService.getAllPlants();
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 201,
+        message: "Plant created successfully!",
+        success: true,
+        data: result,
+    });
+}));
+const getSinglePlant = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("I was here");
+    console.log(req.params);
+    const { id } = req.params;
+    const result = yield plant_service_1.PlantService.getSinglePlant(id);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 201,
+        message: "Plant created successfully!",
+        success: true,
+        data: result,
+    });
+}));
 exports.plantController = {
     createPlant,
+    getAllPlants,
+    getSinglePlant,
 };

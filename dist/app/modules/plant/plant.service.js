@@ -10,9 +10,61 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlantService = void 0;
-const createPlant = (plant) => __awaiter(void 0, void 0, void 0, function* () {
-    return plant;
+const plant_model_1 = require("./plant.model");
+const createPlant = (plant) => __awaiter(void 0, void 0, void 0, function* () { });
+const getAllPlants = () => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield plant_model_1.Plant.aggregate([
+        {
+            $project: {
+                name: 1,
+                price: "$basePrice",
+                img: {
+                    $let: {
+                        vars: {
+                            matchedVariant: {
+                                $first: {
+                                    $filter: {
+                                        input: "$variants",
+                                        as: "variant",
+                                        cond: { $eq: ["$$variant.id", "$defaultVariant"] },
+                                    },
+                                },
+                            },
+                        },
+                        in: "$$matchedVariant.img",
+                    },
+                },
+                second_img: {
+                    $let: {
+                        vars: {
+                            otherVariants: {
+                                $filter: {
+                                    input: "$variants",
+                                    as: "variant",
+                                    cond: { $ne: ["$$variant.id", "$defaultVariant"] },
+                                },
+                            },
+                        },
+                        in: {
+                            $cond: {
+                                if: { $gt: [{ $size: "$$otherVariants" }, 0] },
+                                then: { $first: "$$otherVariants.img" },
+                                else: { $arrayElemAt: ["$more_images", 0] },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    ]);
+    return data;
+});
+const getSinglePlant = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield plant_model_1.Plant.findById(id);
+    return data;
 });
 exports.PlantService = {
     createPlant,
+    getAllPlants,
+    getSinglePlant,
 };

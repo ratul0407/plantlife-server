@@ -3,11 +3,14 @@ import { checkAuth } from "../../middlewares/checkAuth";
 import { Role } from "../user/user.interface";
 import { plantController } from "./plant.controller";
 
+import { multerUpload } from "../../config/multer.config";
+
 const router = Router();
 
 router.post(
-  "/create-plant",
-  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+  "/add-plant",
+  // checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+  multerUpload.array("files"),
   plantController.createPlant
 );
 

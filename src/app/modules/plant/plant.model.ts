@@ -1,37 +1,70 @@
 import { model, Schema } from "mongoose";
-import { Category, IPlant } from "./plant.interface";
+import { Category, IPlant, IPlantVariant } from "./plant.interface";
 
-const plantSchema = new Schema<IPlant>({
-  name: {
-    type: String,
-    required: true,
+const variantSchema = new Schema<IPlantVariant>(
+  {
+    variantName: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    inStock: {
+      type: Boolean,
+      require: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
   },
-  description: {
-    type: String,
-    required: true,
+  { _id: false }
+);
+const plantSchema = new Schema<IPlant>(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      enum: Object.values(Category),
+    },
+    basePrice: {
+      type: Number,
+      required: true,
+    },
+    inStock: {
+      type: Boolean,
+      default: true,
+    },
+    stock: {
+      type: Number,
+      required: true,
+    },
+    tags: {
+      type: [String],
+    },
+    careInstructions: {
+      type: String,
+    },
+    discount: {
+      type: Number,
+    },
+    variant: {
+      type: [variantSchema],
+    },
+    additionalImages: {
+      type: [String],
+    },
   },
-  category: {
-    type: String,
-    enum: Object.values(Category),
-  },
-  basePrice: {
-    type: Number,
-    required: true,
-  },
-  inStock: {
-    type: Boolean,
-    default: true,
-  },
-  stock: {
-    type: Number,
-    required: true,
-  },
-  tags: {
-    type: [String],
-  },
-  careInstructions: {
-    type: String,
-  },
-});
+  { timestamps: true, versionKey: false }
+);
 
 export const Plant = model<IPlant>("Plant", plantSchema);

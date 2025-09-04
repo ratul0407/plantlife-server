@@ -9,6 +9,7 @@ export const checkAuth =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const accessToken = req.cookies.accessToken;
+      console.log(accessToken, "from check auth");
       if (!accessToken) {
         throw new AppError(403, "No AccessToken received");
       }

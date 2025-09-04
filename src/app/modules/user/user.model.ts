@@ -31,11 +31,7 @@ const userSchema = new Schema<IUser>(
     auths: [AuthProviderSchema],
     cart: { type: [Schema.Types.ObjectId], ref: "Plants", default: [] },
     reviews: { type: [Schema.Types.ObjectId], ref: "Reviews", default: [] },
-    recentlyViewed: {
-      type: [Schema.Types.ObjectId],
-      ref: "Plants",
-      default: [],
-    },
+
     questions: { type: [Schema.Types.ObjectId], ref: "Questions", default: [] },
   },
   {

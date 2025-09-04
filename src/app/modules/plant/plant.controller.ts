@@ -3,9 +3,16 @@ import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { PlantService } from "./plant.service";
+import { IPlant } from "./plant.interface";
 
 const createPlant = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const payload: IPlant = {
+      ...req.body,
+      images: req.files,
+    };
+
+    console.log(payload);
     const result = await PlantService.createPlant(req.body);
     sendResponse(res, {
       statusCode: 201,

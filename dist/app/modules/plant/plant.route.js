@@ -7,4 +7,6 @@ const user_interface_1 = require("../user/user.interface");
 const plant_controller_1 = require("./plant.controller");
 const router = (0, express_1.Router)();
 router.post("/create-plant", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), plant_controller_1.plantController.createPlant);
+router.get("/all-plants", plant_controller_1.plantController.getAllPlants);
+router.get("/:id", plant_controller_1.plantController.getSinglePlant);
 exports.PlantRoutes = router;
