@@ -10,9 +10,8 @@ export interface IPlantVariant {
   variantName: string;
   price: number;
   inStock: boolean;
-  stock: boolean;
+  stock: number;
   image: string;
-  sku: string;
 }
 export interface IStats {
   rating?: number;
@@ -24,10 +23,8 @@ export interface IPlant {
   name: string;
   description: string;
   category: Category;
-  basePrice: number;
   inStock: boolean;
-  stock: number;
-  variant: [IPlantVariant];
+  variants: [IPlantVariant];
   additionalImages: string[];
   tags?: string[];
   careInstructions?: string;

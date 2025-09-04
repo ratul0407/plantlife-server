@@ -11,9 +11,10 @@ const variantSchema = new Schema<IPlantVariant>(
       type: Number,
       required: true,
     },
-    inStock: {
-      type: Boolean,
-      require: true,
+    stock: {
+      type: Number,
+      required: true,
+      min: 0,
     },
     image: {
       type: String,
@@ -35,18 +36,11 @@ const plantSchema = new Schema<IPlant>(
     category: {
       type: String,
       enum: Object.values(Category),
-    },
-    basePrice: {
-      type: Number,
       required: true,
     },
     inStock: {
       type: Boolean,
       default: true,
-    },
-    stock: {
-      type: Number,
-      required: true,
     },
     tags: {
       type: [String],
@@ -57,8 +51,9 @@ const plantSchema = new Schema<IPlant>(
     discount: {
       type: Number,
     },
-    variant: {
+    variants: {
       type: [variantSchema],
+      required: true,
     },
     additionalImages: {
       type: [String],
