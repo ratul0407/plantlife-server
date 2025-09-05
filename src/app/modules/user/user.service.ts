@@ -72,7 +72,28 @@ const getMe = async (id: string) => {
   return user;
 };
 
-const addToWishlist = async (payload) => {};
+const addToWishlist = async (id: string, plant: string) => {
+  const user = await User.findById(id);
+  const plantExists = user?.wishlist?.some(
+    (item) => item.plant.toString() === plant
+  );
+
+  if (plantExists) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Plant is already in wishlist");
+  }
+  const updatedUser = User.findOneAndUpdate(
+    { _id: id },
+    {
+      $push: {
+        wishlist: {
+          plant,
+        },
+      },
+    },
+    { runValidators: true, new: true }
+  );
+  return updatedUser;
+};
 export const userServices = {
   createUser,
   getMe,

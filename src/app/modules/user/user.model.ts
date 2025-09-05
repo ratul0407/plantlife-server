@@ -24,12 +24,17 @@ const AuthProviderSchema = new Schema<IAuthProvider>(
 
 const wishlistSchema = new Schema<IWishlist>(
   {
-    name: {
+    plant: {
       type: Schema.Types.ObjectId,
       ref: "Plants",
+      required: true,
     },
   },
-  { _id: false, versionKey: false, timestamps: true }
+  {
+    _id: false,
+    versionKey: false,
+    timestamps: { createdAt: true, updatedAt: false },
+  }
 );
 
 const cartSchema = new Schema<ICart>(

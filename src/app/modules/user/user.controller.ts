@@ -54,7 +54,11 @@ const updateUser = catchAsync(
 
 const addToWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await userServices.addToWishlist(req.body);
+    const { userId } = req.user as JwtPayload;
+    const { plant } = req.body;
+    console.log(userId);
+    console.log("I was here");
+    const result = await userServices.addToWishlist(userId, plant);
     sendResponse(res, {
       statusCode: 201,
       success: true,

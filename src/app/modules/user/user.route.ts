@@ -13,6 +13,11 @@ router.post(
   validateRequest(createUserZodSchema),
   userController.createUser
 );
+router.patch(
+  "/add-to-wishlist",
+  checkAuth(...Object.values(Role)),
+  userController.addToWishlist
+);
 router.get(
   "/all-users",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
@@ -24,9 +29,5 @@ router.patch(
   userController.updateUser
 );
 router.get("/me", checkAuth(...Object.values(Role)), AuthController.getMe);
-router.patch(
-  "/add-to-wishlist",
-  checkAuth(...Object.values(Role)),
-  userController.addToWishlist
-);
+
 export const UserRoutes = router;

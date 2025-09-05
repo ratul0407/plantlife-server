@@ -17,7 +17,7 @@ export interface ICart {
 }
 
 export interface IWishlist {
-  name: Types.ObjectId;
+  plant: Types.ObjectId;
 }
 export enum IsActive {
   ACTIVE = "ACTIVE",
