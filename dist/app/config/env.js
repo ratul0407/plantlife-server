@@ -23,6 +23,9 @@ const loadEnvVariables = () => {
         "GOOGLE_CALLBACK_URL",
         "FRONTEND_URL",
         "EXPRESS_SESSION_SECRET",
+        "CLOUDINARY_CLOUD_NAME",
+        "CLOUDINARY_API_KEY",
+        "CLOUDINARY_API_SECRET",
     ];
     requiredVariables.forEach((key) => {
         if (!process.env[key]) {
@@ -45,6 +48,9 @@ const loadEnvVariables = () => {
         GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
         FRONTEND_URL: process.env.FRONTEND_URL,
         EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET,
+        CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+        CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+        CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     };
 };
 exports.envVars = loadEnvVariables();

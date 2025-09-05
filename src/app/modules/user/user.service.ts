@@ -71,9 +71,12 @@ const getMe = async (id: string) => {
   const user = await User.findById(id).select("-password");
   return user;
 };
+
+const addToWishlist = async (payload) => {};
 export const userServices = {
   createUser,
   getMe,
   getAllUsers,
   updateUser,
+  addToWishlist,
 };

@@ -1,16 +1,48 @@
 import { model, Schema } from "mongoose";
-import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
+import {
+  IAuthProvider,
+  ICart,
+  IsActive,
+  IUser,
+  IWishlist,
+  Role,
+} from "./user.interface";
 
-const AuthProviderSchema = new Schema<IAuthProvider>({
-  provider: {
-    type: String,
-    required: true,
+const AuthProviderSchema = new Schema<IAuthProvider>(
+  {
+    provider: {
+      type: String,
+      required: true,
+    },
+    providerId: {
+      type: String,
+      required: true,
+    },
   },
-  providerId: {
-    type: String,
-    required: true,
+  { _id: false, timestamps: true, versionKey: false }
+);
+
+const wishlistSchema = new Schema<IWishlist>(
+  {
+    name: {
+      type: Schema.Types.ObjectId,
+      ref: "Plants",
+    },
   },
-});
+  { _id: false, versionKey: false, timestamps: true }
+);
+
+const cartSchema = new Schema<ICart>(
+  {
+    plant: {
+      type: Schema.Types.ObjectId,
+    },
+    quantity: {
+      type: Number,
+    },
+  },
+  { _id: false, versionKey: false, timestamps: true }
+);
 const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
@@ -25,11 +57,11 @@ const userSchema = new Schema<IUser>(
       default: IsActive.ACTIVE,
     },
     isDeleted: { type: Boolean, default: false },
-    wishlist: { type: [String], default: [] },
+    wishlist: [wishlistSchema],
     coins: { type: Number, default: 0 },
     role: { type: String, enum: Object.values(Role), default: Role.USER },
     auths: [AuthProviderSchema],
-    cart: { type: [Schema.Types.ObjectId], ref: "Plants", default: [] },
+    cart: [cartSchema],
     reviews: { type: [Schema.Types.ObjectId], ref: "Reviews", default: [] },
 
     questions: { type: [Schema.Types.ObjectId], ref: "Questions", default: [] },

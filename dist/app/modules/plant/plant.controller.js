@@ -14,6 +14,8 @@ const catchAsync_1 = require("../../utils/catchAsync");
 const sendResponse_1 = require("../../utils/sendResponse");
 const plant_service_1 = require("./plant.service");
 const createPlant = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = Object.assign(Object.assign({}, req.body), { images: req.files });
+    console.log(payload);
     const result = yield plant_service_1.PlantService.createPlant(req.body);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 201,

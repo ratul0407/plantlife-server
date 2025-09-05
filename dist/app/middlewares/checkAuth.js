@@ -21,6 +21,7 @@ const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const checkAuth = (...authRole) => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const accessToken = req.cookies.accessToken;
+        console.log(accessToken, "from check auth");
         if (!accessToken) {
             throw new AppError_1.default(403, "No AccessToken received");
         }

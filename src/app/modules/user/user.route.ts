@@ -24,4 +24,9 @@ router.patch(
   userController.updateUser
 );
 router.get("/me", checkAuth(...Object.values(Role)), AuthController.getMe);
+router.patch(
+  "/add-to-wishlist",
+  checkAuth(...Object.values(Role)),
+  userController.addToWishlist
+);
 export const UserRoutes = router;

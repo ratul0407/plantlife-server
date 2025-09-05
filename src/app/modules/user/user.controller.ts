@@ -51,9 +51,21 @@ const updateUser = catchAsync(
     });
   }
 );
+
+const addToWishlist = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userServices.addToWishlist(req.body);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Added to wishlist",
+      data: result,
+    });
+  }
+);
 export const userController = {
   createUser,
-
+  addToWishlist,
   getAllUsers,
   updateUser,
 };

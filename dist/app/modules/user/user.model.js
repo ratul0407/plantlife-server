@@ -32,11 +32,6 @@ const userSchema = new mongoose_1.Schema({
     auths: [AuthProviderSchema],
     cart: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Plants", default: [] },
     reviews: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Reviews", default: [] },
-    recentlyViewed: {
-        type: [mongoose_1.Schema.Types.ObjectId],
-        ref: "Plants",
-        default: [],
-    },
     questions: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Questions", default: [] },
 }, {
     timestamps: true,

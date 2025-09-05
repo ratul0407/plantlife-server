@@ -11,11 +11,14 @@ export interface IAuthProvider {
   provider: "google" | "credentials";
   providerId: string;
 }
-interface ICart {
+export interface ICart {
   plant: Types.ObjectId;
   quantity: number;
 }
 
+export interface IWishlist {
+  name: Types.ObjectId;
+}
 export enum IsActive {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
@@ -31,7 +34,7 @@ export interface IUser {
   isVerified?: boolean;
   isActive: IsActive;
   isDeleted?: boolean;
-  wishlist?: Types.ObjectId[];
+  wishlist?: IWishlist[];
   coins?: number;
   cart?: ICart[];
   role: Role;
