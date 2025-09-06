@@ -14,13 +14,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.globalErrorHandler = void 0;
 const env_1 = require("../config/env");
+const handleDuplicateError_1 = require("../helpers/handleDuplicateError");
+const handleZodError_1 = require("../helpers/handleZodError");
+const handleCastError_1 = require("../helpers/handleCastError");
+const handleValidationError_1 = require("../helpers/handleValidationError");
 const AppError_1 = __importDefault(require("../errorHelpers/AppError"));
 const globalErrorHandler = (err, req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log(err, "from global error handler");
     let statusCode = 500;
     let message = `Something went wrong!`;
-    if (err instanceof AppError_1.default) {
-        console.log(err);
+    let errorSources = [];
+    ///mongoose duplicate error
+    if (err.code === 11000) {
+        const simplifiedError = (0, handleDuplicateError_1.handleDuplicateError)(err);
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message;
+    }
+    else if (err.name === "ZodError") {
+        const simplifiedError = (0, handleZodError_1.handleZodError)(err);
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message;
+        errorSources = simplifiedError.errorSources;
+    }
+    else if (err.name === "CastError") {
+        //mongoose validation error
+        const simplifiedError = (0, handleCastError_1.handleCastError)(err);
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message;
+    }
+    else if (err.name === "ValidationError") {
+        const simplifiedError = (0, handleValidationError_1.handleValidationError)(err);
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message;
+        errorSources = simplifiedError.errorSources;
+    }
+    else if (err instanceof AppError_1.default) {
         statusCode = err.statusCode;
         message = err.message;
     }
@@ -31,8 +58,9 @@ const globalErrorHandler = (err, req, res, next) => __awaiter(void 0, void 0, vo
     res.status(statusCode).json({
         success: false,
         message: message,
-        err,
-        stack: env_1.envVars.NODE_ENV == "development" ? err.stack : null,
+        errorSources,
+        err: env_1.envVars.NODE_ENV === "development" ? err : null,
+        stack: env_1.envVars.NODE_ENV === "development" ? err.stack : null,
     });
 });
 exports.globalErrorHandler = globalErrorHandler;
