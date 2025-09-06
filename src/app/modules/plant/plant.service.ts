@@ -53,8 +53,13 @@ const getSinglePlant = async (id: string) => {
   const data = await Plant.findById(id);
   return data;
 };
+const myWishlistPlant = async (id: string) => {
+  const data = await Plant.findById(id);
+  return data;
+};
 export const PlantService = {
   createPlant,
   getAllPlants,
   getSinglePlant,
+  myWishlistPlant,
 };

@@ -47,8 +47,24 @@ const getSinglePlant = catchAsync(
     });
   }
 );
+
+const myWishlistPlant = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log("I was here");
+    console.log(req.params);
+    const { id } = req.params;
+    const result = await PlantService.myWishlistPlant(id);
+    sendResponse(res, {
+      statusCode: 201,
+      message: "Plant created successfully!",
+      success: true,
+      data: result,
+    });
+  }
+);
 export const plantController = {
   createPlant,
   getAllPlants,
   getSinglePlant,
+  myWishlistPlant,
 };

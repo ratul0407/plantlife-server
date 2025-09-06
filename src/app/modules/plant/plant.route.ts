@@ -1,6 +1,4 @@
 import { Router } from "express";
-import { checkAuth } from "../../middlewares/checkAuth";
-import { Role } from "../user/user.interface";
 import { plantController } from "./plant.controller";
 
 import { multerUpload } from "../../config/multer.config";
@@ -14,6 +12,7 @@ router.post(
   plantController.createPlant
 );
 
+router.get("/my-wishlist", plantController.myWishlistPlant);
 router.get("/all-plants", plantController.getAllPlants);
 router.get("/:id", plantController.getSinglePlant);
 export const PlantRoutes = router;

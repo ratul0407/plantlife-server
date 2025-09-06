@@ -18,6 +18,11 @@ router.patch(
   checkAuth(...Object.values(Role)),
   userController.addToWishlist
 );
+router.patch(
+  "/remove-from-wishlist",
+  checkAuth(...Object.values(Role)),
+  userController.removeFromWishlist
+);
 router.get(
   "/all-users",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
