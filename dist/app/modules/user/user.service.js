@@ -91,10 +91,27 @@ const addToWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, function*
     }, { runValidators: true, new: true });
     return updatedUser;
 });
+const removeFromWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const user = yield user_model_1.User.findById(id);
+    const plantExists = (_a = user === null || user === void 0 ? void 0 : user.wishlist) === null || _a === void 0 ? void 0 : _a.some((item) => item.plant.toString() === plant);
+    if (plantExists) {
+        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "Plant is already in wishlist");
+    }
+    const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
+        $pop: {
+            wishlist: {
+                plant,
+            },
+        },
+    }, { runValidators: true, new: true });
+    return updatedUser;
+});
 exports.userServices = {
     createUser,
     getMe,
     getAllUsers,
     updateUser,
     addToWishlist,
+    removeFromWishlist,
 };

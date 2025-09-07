@@ -14,7 +14,11 @@ router.post(
   plantController.createPlant
 );
 
-router.get("/my-wishlist", plantController.myWishlistPlant);
+router.get(
+  "/my-wishlist",
+  checkAuth(...Object.values(Role)),
+  plantController.myWishlistPlant
+);
 router.get("/all-plants", plantController.getAllPlants);
 router.get("/:id", plantController.getSinglePlant);
 export const PlantRoutes = router;

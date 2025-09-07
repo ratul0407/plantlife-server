@@ -11,6 +11,7 @@ const auth_controller_1 = require("../auth/auth.controller");
 const router = (0, express_1.Router)();
 router.post("/register", (0, validateRequest_1.validateRequest)(user_validation_1.createUserZodSchema), user_controller_1.userController.createUser);
 router.patch("/add-to-wishlist", (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.Role)), user_controller_1.userController.addToWishlist);
+router.patch("/remove-from-wishlist", (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.Role)), user_controller_1.userController.removeFromWishlist);
 router.get("/all-users", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), user_controller_1.userController.getAllUsers);
 router.patch("/:id", (0, validateRequest_1.validateRequest)(user_validation_1.updateUserZodSchema), user_controller_1.userController.updateUser);
 router.get("/me", (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.Role)), auth_controller_1.AuthController.getMe);
