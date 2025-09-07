@@ -58,9 +58,16 @@ const myWishlistPlant = async (id: string) => {
   ]);
   return userPlants;
 };
+
+const removeFromWishlist = async (userId: string, plant: string) => {
+  await User.findByIdAndUpdate(userId, {
+    $pull: { wishlist: { plant: plant } },
+  });
+};
 export const PlantService = {
   createPlant,
   getAllPlants,
   getSinglePlant,
   myWishlistPlant,
+  removeFromWishlist,
 };

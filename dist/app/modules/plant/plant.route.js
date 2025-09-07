@@ -8,7 +8,7 @@ const user_interface_1 = require("../user/user.interface");
 const checkAuth_1 = require("../../middlewares/checkAuth");
 const router = (0, express_1.Router)();
 router.post("/add-plants", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), multer_config_1.multerUpload.fields([{ name: "images" }, { name: "variantImages" }]), plant_controller_1.plantController.createPlant);
-router.get("/my-wishlist", plant_controller_1.plantController.myWishlistPlant);
+router.get("/my-wishlist", (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.Role)), plant_controller_1.plantController.myWishlistPlant);
 router.get("/all-plants", plant_controller_1.plantController.getAllPlants);
 router.get("/:id", plant_controller_1.plantController.getSinglePlant);
 exports.PlantRoutes = router;

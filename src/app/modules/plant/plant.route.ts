@@ -19,6 +19,11 @@ router.get(
   checkAuth(...Object.values(Role)),
   plantController.myWishlistPlant
 );
+router.patch(
+  "/remove-from-wishlist",
+  checkAuth(...Object.values(Role)),
+  plantController.removeFromWishlist
+);
 router.get("/all-plants", plantController.getAllPlants);
 router.get("/:id", plantController.getSinglePlant);
 export const PlantRoutes = router;

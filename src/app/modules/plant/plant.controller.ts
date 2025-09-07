@@ -75,7 +75,7 @@ const getSinglePlant = catchAsync(
 
 const myWishlistPlant = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.user);
+    console.log("I was hit");
     const { userId } = req.user as JwtPayload;
     const result = await PlantService.myWishlistPlant(userId);
     sendResponse(res, {
@@ -86,9 +86,24 @@ const myWishlistPlant = catchAsync(
     });
   }
 );
+const removeFromWishlist = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    const { userId } = req.user as JwtPayload;
+    const { id } = req.body;
+    await PlantService.removeFromWishlist(userId, id);
+    sendResponse(res, {
+      statusCode: 201,
+      message: "plant removed from wishlist successfully!",
+      success: true,
+      data: null,
+    });
+  }
+);
 export const plantController = {
   createPlant,
   getAllPlants,
   getSinglePlant,
   myWishlistPlant,
+  removeFromWishlist,
 };

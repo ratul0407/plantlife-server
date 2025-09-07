@@ -33,7 +33,6 @@ const checkAuth = (...authRole) => (req, res, next) => __awaiter(void 0, void 0,
             throw new AppError_1.default(403, "You are not permitted to view this route");
         }
         req.user = verifiedToken;
-        console.log(verifiedToken);
         next();
     }
     catch (error) {

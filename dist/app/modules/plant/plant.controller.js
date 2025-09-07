@@ -64,13 +64,12 @@ const getSinglePlant = (0, catchAsync_1.catchAsync)((req, res, next) => __awaite
     });
 }));
 const myWishlistPlant = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("I was here");
-    console.log(req.params);
-    const { id } = req.params;
-    const result = yield plant_service_1.PlantService.myWishlistPlant(id);
+    console.log(req.user);
+    const { userId } = req.user;
+    const result = yield plant_service_1.PlantService.myWishlistPlant(userId);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 201,
-        message: "Plant created successfully!",
+        message: "Wishlist retrieved successfully!",
         success: true,
         data: result,
     });
