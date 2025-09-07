@@ -73,7 +73,7 @@ const removeFromWishlist = catchAsync(
     const { userId } = req.user as JwtPayload;
     const { plant } = req.body;
 
-    const result = await userServices.addToWishlist(userId, plant);
+    const result = await userServices.removeFromWishlist(userId, plant);
     sendResponse(res, {
       statusCode: 201,
       success: true,

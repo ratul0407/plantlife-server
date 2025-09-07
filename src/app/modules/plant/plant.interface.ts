@@ -12,6 +12,7 @@ export interface IPlantVariant {
   inStock: boolean;
   stock: number;
   image: string;
+  sku: string;
 }
 export interface IStats {
   rating?: number;

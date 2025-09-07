@@ -1,7 +1,11 @@
 import { IPlant } from "./plant.interface";
 import { Plant } from "./plant.model";
 
-const createPlant = async (plant: IPlant) => {};
+const createPlant = async (plant: IPlant) => {
+  console.log(plant);
+  const createdPlant = await Plant.create(plant);
+  return createdPlant;
+};
 const getAllPlants = async () => {
   const data = await Plant.aggregate([
     {

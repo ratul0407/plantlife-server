@@ -11,12 +11,21 @@ const variantSchema = new Schema<IPlantVariant>(
       type: Number,
       required: true,
     },
+    inStock: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
     stock: {
       type: Number,
       required: true,
       min: 0,
     },
     image: {
+      type: String,
+      required: true,
+    },
+    sku: {
       type: String,
       required: true,
     },
