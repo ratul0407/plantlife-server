@@ -24,6 +24,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userServices = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
 const env_1 = require("../../config/env");
 const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
 const userTokens_1 = require("../../utils/userTokens");
@@ -107,6 +108,45 @@ const removeFromWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, func
     }, { runValidators: true, new: true });
     return updatedUser;
 });
+const addToCart = (id, plant, quantity) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const user = yield user_model_1.User.findById(id);
+    const plantExists = (_a = user === null || user === void 0 ? void 0 : user.cart) === null || _a === void 0 ? void 0 : _a.some((item) => item.plant.toString() === plant);
+    if (plantExists) {
+        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "Plant is already in Cart");
+    }
+    const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
+        $push: {
+            cart: {
+                plant,
+                quantity,
+            },
+        },
+    }, { runValidators: true, new: true });
+    return updatedUser;
+});
+const myCart = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const userPlants = yield user_model_1.User.aggregate([
+        { $match: { _id: new mongoose_1.default.Types.ObjectId(id) } },
+        { $unwind: "$cart" },
+        {
+            $lookup: {
+                from: "plants",
+                localField: "cart.plant",
+                foreignField: "_id",
+                as: "cart.plantDetails",
+            },
+        },
+        { $unwind: "$cart.plantDetails" }, // flatten plant details
+        {
+            $group: {
+                _id: "$_id",
+                cart: { $push: "$cart" },
+            },
+        },
+    ]);
+    return userPlants;
+});
 exports.userServices = {
     createUser,
     getMe,
@@ -114,4 +154,6 @@ exports.userServices = {
     updateUser,
     addToWishlist,
     removeFromWishlist,
+    addToCart,
+    myCart,
 };

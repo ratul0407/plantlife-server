@@ -49,7 +49,10 @@ const createPlant = catchAsync(
 );
 const getAllPlants = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await PlantService.getAllPlants();
+    const query = req.query;
+    const result = await PlantService.getAllPlants(
+      query as Record<string, string>
+    );
     sendResponse(res, {
       statusCode: 201,
       message: "Plant created successfully!",
