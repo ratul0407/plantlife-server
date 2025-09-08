@@ -82,10 +82,40 @@ const removeFromWishlist = catchAsync(
     });
   }
 );
+
+const addToCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+    const { plant, quantity } = req.body;
+
+    const result = await userServices.addToCart(userId, plant, quantity);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Added to Cart",
+      data: result,
+    });
+  }
+);
+const myCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+    console.log(userId);
+    const result = await userServices.myCart(userId);
+    sendResponse(res, {
+      statusCode: 201,
+      message: "Cart retrieved successfully!",
+      success: true,
+      data: result,
+    });
+  }
+);
 export const userController = {
   createUser,
   getAllUsers,
   updateUser,
   addToWishlist,
   removeFromWishlist,
+  addToCart,
+  myCart,
 };

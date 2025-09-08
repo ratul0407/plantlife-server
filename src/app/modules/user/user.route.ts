@@ -24,6 +24,16 @@ router.patch(
   userController.removeFromWishlist
 );
 router.get(
+  "/my-cart",
+  checkAuth(...Object.values(Role)),
+  userController.myCart
+);
+router.patch(
+  "/add-to-cart",
+  checkAuth(...Object.values(Role)),
+  userController.addToCart
+);
+router.get(
   "/all-users",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
   userController.getAllUsers

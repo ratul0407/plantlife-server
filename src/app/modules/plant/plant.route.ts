@@ -24,6 +24,7 @@ router.patch(
   checkAuth(...Object.values(Role)),
   plantController.removeFromWishlist
 );
+
 router.get("/all-plants", plantController.getAllPlants);
 router.get("/:id", plantController.getSinglePlant);
 export const PlantRoutes = router;

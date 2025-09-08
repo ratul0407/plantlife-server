@@ -71,9 +71,15 @@ const myWishlistPlant = (id) => __awaiter(void 0, void 0, void 0, function* () {
     ]);
     return userPlants;
 });
+const removeFromWishlist = (userId, plant) => __awaiter(void 0, void 0, void 0, function* () {
+    yield user_model_1.User.findByIdAndUpdate(userId, {
+        $pull: { wishlist: { plant: plant } },
+    });
+});
 exports.PlantService = {
     createPlant,
     getAllPlants,
     getSinglePlant,
     myWishlistPlant,
+    removeFromWishlist,
 };

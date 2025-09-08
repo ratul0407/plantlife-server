@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
 import { createUserTokens } from "../../utils/userTokens";
@@ -116,6 +117,52 @@ const removeFromWishlist = async (id: string, plant: string) => {
   );
   return updatedUser;
 };
+const addToCart = async (id: string, plant: string, quantity: string) => {
+  const user = await User.findById(id);
+  const plantExists = user?.cart?.some(
+    (item) => item.plant.toString() === plant
+  );
+
+  if (plantExists) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Plant is already in Cart");
+  }
+  const updatedUser = User.findOneAndUpdate(
+    { _id: id },
+    {
+      $push: {
+        cart: {
+          plant,
+          quantity,
+        },
+      },
+    },
+    { runValidators: true, new: true }
+  );
+  return updatedUser;
+};
+
+const myCart = async (id: string) => {
+  const userPlants = await User.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(id) } },
+    { $unwind: "$cart" },
+    {
+      $lookup: {
+        from: "plants",
+        localField: "cart.plant",
+        foreignField: "_id",
+        as: "cart.plantDetails",
+      },
+    },
+    { $unwind: "$cart.plantDetails" }, // flatten plant details
+    {
+      $group: {
+        _id: "$_id",
+        cart: { $push: "$cart" },
+      },
+    },
+  ]);
+  return userPlants;
+};
 export const userServices = {
   createUser,
   getMe,
@@ -123,4 +170,6 @@ export const userServices = {
   updateUser,
   addToWishlist,
   removeFromWishlist,
+  addToCart,
+  myCart,
 };
