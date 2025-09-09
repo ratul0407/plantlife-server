@@ -117,7 +117,12 @@ const removeFromWishlist = async (id: string, plant: string) => {
   );
   return updatedUser;
 };
-const addToCart = async (id: string, plant: string, quantity: string) => {
+const addToCart = async (
+  id: string,
+  plant: string,
+  quantity: string,
+  sku: string
+) => {
   const user = await User.findById(id);
   const plantExists = user?.cart?.some(
     (item) => item.plant.toString() === plant
@@ -133,6 +138,7 @@ const addToCart = async (id: string, plant: string, quantity: string) => {
         cart: {
           plant,
           quantity,
+          sku,
         },
       },
     },
@@ -163,6 +169,24 @@ const myCart = async (id: string) => {
   ]);
   return userPlants;
 };
+
+const updateCart = async (user: string, sku: string, quantity: number) => {
+  console.log("I was here");
+  const updatedUser = User.findByIdAndUpdate(
+    user,
+    {
+      $set: {
+        "cart.$[item].quantity": quantity,
+      },
+    },
+    {
+      new: true,
+      arrayFilters: [{ "item.sku": sku }],
+    }
+  );
+  console.log(updatedUser);
+  return updatedUser;
+};
 export const userServices = {
   createUser,
   getMe,
@@ -172,4 +196,5 @@ export const userServices = {
   removeFromWishlist,
   addToCart,
   myCart,
+  updateCart,
 };

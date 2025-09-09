@@ -55,7 +55,7 @@ const getAllPlants = catchAsync(
     );
     sendResponse(res, {
       statusCode: 201,
-      message: "Plant created successfully!",
+      message: "Plants retrieved successfully!",
       success: true,
       data: result,
     });

@@ -86,9 +86,9 @@ const removeFromWishlist = catchAsync(
 const addToCart = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
-    const { plant, quantity } = req.body;
+    const { plant, quantity, sku } = req.body;
 
-    const result = await userServices.addToCart(userId, plant, quantity);
+    const result = await userServices.addToCart(userId, plant, quantity, sku);
     sendResponse(res, {
       statusCode: 201,
       success: true,
@@ -110,6 +110,19 @@ const myCart = catchAsync(
     });
   }
 );
+const updateCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { quantity, sku } = req.body;
+    const { userId } = req.user as JwtPayload;
+    const result = await userServices.updateCart(userId, sku, quantity);
+    sendResponse(res, {
+      statusCode: 201,
+      message: "Cart updated successfully!",
+      success: true,
+      data: result,
+    });
+  }
+);
 export const userController = {
   createUser,
   getAllUsers,
@@ -118,4 +131,5 @@ export const userController = {
   removeFromWishlist,
   addToCart,
   myCart,
+  updateCart,
 };

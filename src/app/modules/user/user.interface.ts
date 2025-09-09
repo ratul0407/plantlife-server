@@ -13,6 +13,7 @@ export interface IAuthProvider {
 }
 export interface ICart {
   plant: Types.ObjectId;
+  sku: string;
   quantity: number;
 }
 

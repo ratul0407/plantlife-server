@@ -41,9 +41,15 @@ const cartSchema = new Schema<ICart>(
   {
     plant: {
       type: Schema.Types.ObjectId,
+      required: true,
     },
     quantity: {
       type: Number,
+      required: true,
+    },
+    sku: {
+      type: String,
+      required: true,
     },
   },
   { _id: false, versionKey: false, timestamps: true }

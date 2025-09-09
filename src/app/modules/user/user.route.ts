@@ -33,6 +33,12 @@ router.patch(
   checkAuth(...Object.values(Role)),
   userController.addToCart
 );
+
+router.patch(
+  "/update-cart",
+  checkAuth(...Object.values(Role)),
+  userController.updateCart
+);
 router.get(
   "/all-users",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
