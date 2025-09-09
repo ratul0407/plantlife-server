@@ -108,7 +108,7 @@ const removeFromWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, func
     }, { runValidators: true, new: true });
     return updatedUser;
 });
-const addToCart = (id, plant, quantity) => __awaiter(void 0, void 0, void 0, function* () {
+const addToCart = (id, plant, quantity, sku) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const user = yield user_model_1.User.findById(id);
     const plantExists = (_a = user === null || user === void 0 ? void 0 : user.cart) === null || _a === void 0 ? void 0 : _a.some((item) => item.plant.toString() === plant);
@@ -120,6 +120,7 @@ const addToCart = (id, plant, quantity) => __awaiter(void 0, void 0, void 0, fun
             cart: {
                 plant,
                 quantity,
+                sku,
             },
         },
     }, { runValidators: true, new: true });
@@ -147,6 +148,19 @@ const myCart = (id) => __awaiter(void 0, void 0, void 0, function* () {
     ]);
     return userPlants;
 });
+const updateCart = (user, sku, quantity) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("I was here");
+    const updatedUser = user_model_1.User.findByIdAndUpdate(user, {
+        $set: {
+            "cart.$[item].quantity": quantity,
+        },
+    }, {
+        new: true,
+        arrayFilters: [{ "item.sku": sku }],
+    });
+    console.log(updatedUser);
+    return updatedUser;
+});
 exports.userServices = {
     createUser,
     getMe,
@@ -156,4 +170,5 @@ exports.userServices = {
     removeFromWishlist,
     addToCart,
     myCart,
+    updateCart,
 };

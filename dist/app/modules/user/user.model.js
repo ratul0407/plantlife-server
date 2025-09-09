@@ -27,9 +27,15 @@ const wishlistSchema = new mongoose_1.Schema({
 const cartSchema = new mongoose_1.Schema({
     plant: {
         type: mongoose_1.Schema.Types.ObjectId,
+        required: true,
     },
     quantity: {
         type: Number,
+        required: true,
+    },
+    sku: {
+        type: String,
+        required: true,
     },
 }, { _id: false, versionKey: false, timestamps: true });
 const userSchema = new mongoose_1.Schema({

@@ -35,14 +35,30 @@ export class QueryBuilder<T> {
     this.modelQuery = this.modelQuery.find(searchQuery);
     return this;
   }
-
   sort(): this {
-    const sort = this.query.sort || "-createdAt";
+    const sortField = this.query.sort || "-createdAt";
 
-    this.modelQuery = this.modelQuery.sort(sort);
+    if (sortField.includes("variants.price")) {
+      // Replace .find().sort() with aggregation
+      const direction = sortField.startsWith("-") ? -1 : 1;
+
+      this.modelQuery = (this.modelQuery as any).aggregate([
+        {
+          $addFields: {
+            minVariantPrice: { $min: "$variants.price" },
+          },
+        },
+        {
+          $sort: { minVariantPrice: direction },
+        },
+      ]) as any; // since aggregate() returns Aggregate, not Query
+    } else {
+      this.modelQuery = this.modelQuery.sort(sortField);
+    }
 
     return this;
   }
+
   fields(): this {
     const fields = this.query.fields?.split(",").join(" ") || "";
 

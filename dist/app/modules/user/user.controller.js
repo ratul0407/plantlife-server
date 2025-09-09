@@ -76,8 +76,8 @@ const removeFromWishlist = (0, catchAsync_1.catchAsync)((req, res, next) => __aw
 }));
 const addToCart = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.user;
-    const { plant, quantity } = req.body;
-    const result = yield user_service_1.userServices.addToCart(userId, plant, quantity);
+    const { plant, quantity, sku } = req.body;
+    const result = yield user_service_1.userServices.addToCart(userId, plant, quantity, sku);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 201,
         success: true,
@@ -96,6 +96,17 @@ const myCart = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0
         data: result,
     });
 }));
+const updateCart = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { quantity, sku } = req.body;
+    const { userId } = req.user;
+    const result = yield user_service_1.userServices.updateCart(userId, sku, quantity);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 201,
+        message: "Cart updated successfully!",
+        success: true,
+        data: result,
+    });
+}));
 exports.userController = {
     createUser,
     getAllUsers,
@@ -104,4 +115,5 @@ exports.userController = {
     removeFromWishlist,
     addToCart,
     myCart,
+    updateCart,
 };
