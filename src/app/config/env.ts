@@ -18,9 +18,9 @@ interface envConfig {
   GOOGLE_CALLBACK_URL: string;
   FRONTEND_URL: string;
   EXPRESS_SESSION_SECRET: string;
-  CLOUDINARY_CLOUD_NAME: string;
-  CLOUDINARY_API_KEY: string;
-  CLOUDINARY_API_SECRET: string;
+  // CLOUDINARY_CLOUD_NAME: string;
+  // CLOUDINARY_API_KEY: string;
+  // CLOUDINARY_API_SECRET: string;
 }
 
 const loadEnvVariables = (): envConfig => {
@@ -40,9 +40,9 @@ const loadEnvVariables = (): envConfig => {
     "GOOGLE_CALLBACK_URL",
     "FRONTEND_URL",
     "EXPRESS_SESSION_SECRET",
-    "CLOUDINARY_CLOUD_NAME",
-    "CLOUDINARY_API_KEY",
-    "CLOUDINARY_API_SECRET",
+    // "CLOUDINARY_CLOUD_NAME",
+    // "CLOUDINARY_API_KEY",
+    // "CLOUDINARY_API_SECRET",
   ];
   requiredVariables.forEach((key) => {
     if (!process.env[key]) {
@@ -65,9 +65,9 @@ const loadEnvVariables = (): envConfig => {
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
     FRONTEND_URL: process.env.FRONTEND_URL as string,
     EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET as string,
-    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
-    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
-    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
+    // CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
+    // CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
+    // CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
   };
 };
 
