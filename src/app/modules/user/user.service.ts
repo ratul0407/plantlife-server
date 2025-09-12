@@ -129,7 +129,19 @@ const addToCart = async (
   );
 
   if (plantExists) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Plant is already in Cart");
+    const updatedUser = User.findByIdAndUpdate(
+      user,
+      {
+        $set: {
+          "cart.$[item].quantity": quantity,
+        },
+      },
+      {
+        new: true,
+        arrayFilters: [{ "item.sku": sku }],
+      }
+    );
+    return updatedUser;
   }
   const updatedUser = User.findOneAndUpdate(
     { _id: id },

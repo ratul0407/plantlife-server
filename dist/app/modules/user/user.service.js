@@ -161,6 +161,16 @@ const updateCart = (user, sku, quantity) => __awaiter(void 0, void 0, void 0, fu
     console.log(updatedUser);
     return updatedUser;
 });
+const removeFromCart = (id, plant) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
+        $pull: {
+            cart: {
+                plant: plant,
+            },
+        },
+    }, { runValidators: true, new: true });
+    return updatedUser;
+});
 exports.userServices = {
     createUser,
     getMe,
@@ -171,4 +181,5 @@ exports.userServices = {
     addToCart,
     myCart,
     updateCart,
+    removeFromCart,
 };

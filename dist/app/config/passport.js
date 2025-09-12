@@ -16,58 +16,11 @@ const passport_1 = __importDefault(require("passport"));
 const passport_google_oauth20_1 = require("passport-google-oauth20");
 const env_1 = require("./env");
 const user_model_1 = require("../modules/user/user.model");
-// import { IsActive, Role } from "../modules/user/user.interface";
 const passport_local_1 = require("passport-local");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-// import AppError from "../errorHelpers/appError";
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const AppError_1 = __importDefault(require("../errorHelpers/AppError"));
 const user_interface_1 = require("../modules/user/user.interface");
-// passport.use(
-//   new LocalStrategy(
-//     {
-//       usernameField: "email",
-//       passwordField: "password",
-//     },
-//     async (email: string, password: string, done) => {
-//       console.log(email, password);
-//       try {
-//         const isUserExists = await User.findOne({ email });
-//         console.log(isUserExists, "from line 23");
-//         if (!isUserExists) {
-//           return done("User does not exist");
-//         }
-//         if (isUserExists.isBlocked) {
-//           done(`User is blocked`);
-//         }
-//         if (!isUserExists.isVerified) {
-//           done(" User is not verified");
-//         }
-//         if (isUserExists.isDeleted) {
-//           throw new AppError(httpStatus.BAD_REQUEST, "User is deleted");
-//         }
-//         const isGoogleAuthenticated = isUserExists.auths.some(
-//           (providerObjects) => providerObjects.provider === "google"
-//         );
-//         if (isGoogleAuthenticated && !isUserExists.password) {
-//           return done(
-//             "You have authenticated with google. If you want to login with password, first login with google and then set a password to login with a password for next time"
-//           );
-//         }
-//         const isPasswordMatched = bcryptjs.compare(
-//           password as string,
-//           isUserExists.password as string
-//         );
-//         if (!isPasswordMatched) {
-//           return done(null, false, { message: "Password does not match" });
-//         }
-//         return done(null, isUserExists);
-//       } catch (error) {
-//         done(error);
-//       }
-//     }
-//   )
-// );
 passport_1.default.use(new passport_local_1.Strategy({
     usernameField: "email",
     passwordField: "password",
