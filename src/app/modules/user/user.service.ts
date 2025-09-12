@@ -187,6 +187,22 @@ const updateCart = async (user: string, sku: string, quantity: number) => {
   console.log(updatedUser);
   return updatedUser;
 };
+
+const removeFromCart = async (id: string, plant: string) => {
+  const updatedUser = User.findOneAndUpdate(
+    { _id: id },
+    {
+      $pull: {
+        cart: {
+          plant: plant,
+        },
+      },
+    },
+    { runValidators: true, new: true }
+  );
+  return updatedUser;
+};
+
 export const userServices = {
   createUser,
   getMe,
@@ -197,4 +213,5 @@ export const userServices = {
   addToCart,
   myCart,
   updateCart,
+  removeFromCart,
 };

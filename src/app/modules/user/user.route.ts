@@ -33,6 +33,11 @@ router.patch(
   checkAuth(...Object.values(Role)),
   userController.addToCart
 );
+router.patch(
+  "/remove-from-cart",
+  checkAuth(...Object.values(Role)),
+  userController.removeFromCart
+);
 
 router.patch(
   "/update-cart",

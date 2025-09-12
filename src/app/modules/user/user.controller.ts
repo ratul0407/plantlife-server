@@ -123,6 +123,22 @@ const updateCart = catchAsync(
     });
   }
 );
+
+const removeFromCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+
+    const { plant } = req.body;
+
+    const result = await userServices.removeFromCart(userId, plant);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Removed from cart",
+      data: result,
+    });
+  }
+);
 export const userController = {
   createUser,
   getAllUsers,
@@ -132,4 +148,5 @@ export const userController = {
   addToCart,
   myCart,
   updateCart,
+  removeFromCart,
 };
