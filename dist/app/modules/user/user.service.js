@@ -109,11 +109,14 @@ const removeFromWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, func
     return updatedUser;
 });
 const addToCart = (id, plant, quantity, sku) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     const user = yield user_model_1.User.findById(id);
     const plantExists = (_a = user === null || user === void 0 ? void 0 : user.cart) === null || _a === void 0 ? void 0 : _a.some((item) => item.plant.toString() === plant);
-    if (plantExists) {
-        const updatedUser = user_model_1.User.findByIdAndUpdate(user, {
+    console.log(plantExists);
+    const sameSku = (_b = user === null || user === void 0 ? void 0 : user.cart) === null || _b === void 0 ? void 0 : _b.some((item) => item.sku === sku);
+    console.log(sameSku);
+    if (sameSku) {
+        const updatedUser = user_model_1.User.findByIdAndUpdate(id, {
             $set: {
                 "cart.$[item].quantity": quantity,
             },

@@ -128,9 +128,9 @@ const removeFromCart = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
 
-    const { plant } = req.body;
+    const { sku } = req.body;
 
-    const result = await userServices.removeFromCart(userId, plant);
+    const result = await userServices.removeFromCart(userId, sku);
     sendResponse(res, {
       statusCode: 201,
       success: true,

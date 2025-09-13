@@ -124,26 +124,14 @@ const addToCart = async (
   sku: string
 ) => {
   const user = await User.findById(id);
-  const plantExists = user?.cart?.some(
-    (item) => item.plant.toString() === plant
-  );
-  console.log(plantExists);
+
   const sameSku = user?.cart?.some((item) => item.sku === sku);
-  console.log(sameSku);
+
   if (sameSku) {
-    const updatedUser = User.findByIdAndUpdate(
-      id,
-      {
-        $set: {
-          "cart.$[item].quantity": quantity,
-        },
-      },
-      {
-        new: true,
-        arrayFilters: [{ "item.sku": sku }],
-      }
-    );
-    return updatedUser;
+    const quantity = user?.cart?.find((item) => item.sku === sku)?.quantity;
+    if (quantity) {
+      return updateCart(id, sku, quantity + 1);
+    }
   }
 
   const updatedUser = User.findOneAndUpdate(
@@ -203,13 +191,13 @@ const updateCart = async (user: string, sku: string, quantity: number) => {
   return updatedUser;
 };
 
-const removeFromCart = async (id: string, plant: string) => {
+const removeFromCart = async (id: string, sku: string) => {
   const updatedUser = User.findOneAndUpdate(
     { _id: id },
     {
       $pull: {
         cart: {
-          plant: plant,
+          sku: sku,
         },
       },
     },
