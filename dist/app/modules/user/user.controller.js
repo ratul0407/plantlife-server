@@ -110,8 +110,8 @@ const updateCart = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(vo
 }));
 const removeFromCart = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.user;
-    const { plant } = req.body;
-    const result = yield user_service_1.userServices.removeFromCart(userId, plant);
+    const { sku } = req.body;
+    const result = yield user_service_1.userServices.removeFromCart(userId, sku);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 201,
         success: true,

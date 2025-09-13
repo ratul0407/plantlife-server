@@ -109,22 +109,14 @@ const removeFromWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, func
     return updatedUser;
 });
 const addToCart = (id, plant, quantity, sku) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c;
     const user = yield user_model_1.User.findById(id);
-    const plantExists = (_a = user === null || user === void 0 ? void 0 : user.cart) === null || _a === void 0 ? void 0 : _a.some((item) => item.plant.toString() === plant);
-    console.log(plantExists);
-    const sameSku = (_b = user === null || user === void 0 ? void 0 : user.cart) === null || _b === void 0 ? void 0 : _b.some((item) => item.sku === sku);
-    console.log(sameSku);
+    const sameSku = (_a = user === null || user === void 0 ? void 0 : user.cart) === null || _a === void 0 ? void 0 : _a.some((item) => item.sku === sku);
     if (sameSku) {
-        const updatedUser = user_model_1.User.findByIdAndUpdate(id, {
-            $set: {
-                "cart.$[item].quantity": quantity,
-            },
-        }, {
-            new: true,
-            arrayFilters: [{ "item.sku": sku }],
-        });
-        return updatedUser;
+        const quantity = (_c = (_b = user === null || user === void 0 ? void 0 : user.cart) === null || _b === void 0 ? void 0 : _b.find((item) => item.sku === sku)) === null || _c === void 0 ? void 0 : _c.quantity;
+        if (quantity) {
+            return updateCart(id, sku, quantity + 1);
+        }
     }
     const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
         $push: {
@@ -172,11 +164,11 @@ const updateCart = (user, sku, quantity) => __awaiter(void 0, void 0, void 0, fu
     console.log(updatedUser);
     return updatedUser;
 });
-const removeFromCart = (id, plant) => __awaiter(void 0, void 0, void 0, function* () {
+const removeFromCart = (id, sku) => __awaiter(void 0, void 0, void 0, function* () {
     const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
         $pull: {
             cart: {
-                plant: plant,
+                sku: sku,
             },
         },
     }, { runValidators: true, new: true });
