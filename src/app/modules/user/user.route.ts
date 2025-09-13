@@ -13,6 +13,12 @@ router.post(
   validateRequest(createUserZodSchema),
   userController.createUser
 );
+
+router.get(
+  "/my-wishlist",
+  checkAuth(...Object.values(Role)),
+  userController.myWishlist
+);
 router.patch(
   "/add-to-wishlist",
   checkAuth(...Object.values(Role)),

@@ -52,6 +52,19 @@ const updateUser = catchAsync(
   }
 );
 
+const myWishlist = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log("I was hit");
+    const { userId } = req.user as JwtPayload;
+    const result = await userServices.myWishlist(userId);
+    sendResponse(res, {
+      statusCode: 201,
+      message: "Wishlist retrieved successfully!",
+      success: true,
+      data: result,
+    });
+  }
+);
 const addToWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
@@ -77,7 +90,7 @@ const removeFromWishlist = catchAsync(
     sendResponse(res, {
       statusCode: 201,
       success: true,
-      message: "Added to wishlist",
+      message: "Plant removed from wishlist",
       data: result,
     });
   }
@@ -149,4 +162,5 @@ export const userController = {
   myCart,
   updateCart,
   removeFromCart,
+  myWishlist,
 };

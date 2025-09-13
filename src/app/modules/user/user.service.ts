@@ -73,6 +73,28 @@ const getMe = async (id: string) => {
   return user;
 };
 
+const myWishlist = async (id: string) => {
+  const userPlants = await User.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(id) } },
+    { $unwind: "$wishlist" },
+    {
+      $lookup: {
+        from: "plants",
+        localField: "wishlist.plant",
+        foreignField: "_id",
+        as: "wishlist.plantDetails",
+      },
+    },
+    { $unwind: "$wishlist.plantDetails" }, // flatten plant details
+    {
+      $group: {
+        _id: "$_id",
+        wishlist: { $push: "$wishlist" },
+      },
+    },
+  ]);
+  return userPlants;
+};
 const addToWishlist = async (id: string, plant: string) => {
   const user = await User.findById(id);
   const plantExists = user?.wishlist?.some(
@@ -96,20 +118,15 @@ const addToWishlist = async (id: string, plant: string) => {
   return updatedUser;
 };
 const removeFromWishlist = async (id: string, plant: string) => {
-  const user = await User.findById(id);
-  const plantExists = user?.wishlist?.some(
-    (item) => item.plant.toString() === plant
-  );
+  console.log(id, plant);
 
-  if (plantExists) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Plant is already in wishlist");
-  }
-  const updatedUser = User.findOneAndUpdate(
-    { _id: id },
+  console.log("i was here");
+  const updatedUser = User.findByIdAndUpdate(
+    id,
     {
-      $pop: {
+      $pull: {
         wishlist: {
-          plant,
+          plant: plant,
         },
       },
     },
@@ -217,4 +234,5 @@ export const userServices = {
   myCart,
   updateCart,
   removeFromCart,
+  myWishlist,
 };
