@@ -127,10 +127,12 @@ const addToCart = async (
   const plantExists = user?.cart?.some(
     (item) => item.plant.toString() === plant
   );
-
-  if (plantExists) {
+  console.log(plantExists);
+  const sameSku = user?.cart?.some((item) => item.sku === sku);
+  console.log(sameSku);
+  if (sameSku) {
     const updatedUser = User.findByIdAndUpdate(
-      user,
+      id,
       {
         $set: {
           "cart.$[item].quantity": quantity,
@@ -143,6 +145,7 @@ const addToCart = async (
     );
     return updatedUser;
   }
+
   const updatedUser = User.findOneAndUpdate(
     { _id: id },
     {

@@ -113,7 +113,15 @@ const addToCart = (id, plant, quantity, sku) => __awaiter(void 0, void 0, void 0
     const user = yield user_model_1.User.findById(id);
     const plantExists = (_a = user === null || user === void 0 ? void 0 : user.cart) === null || _a === void 0 ? void 0 : _a.some((item) => item.plant.toString() === plant);
     if (plantExists) {
-        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "Plant is already in Cart");
+        const updatedUser = user_model_1.User.findByIdAndUpdate(user, {
+            $set: {
+                "cart.$[item].quantity": quantity,
+            },
+        }, {
+            new: true,
+            arrayFilters: [{ "item.sku": sku }],
+        });
+        return updatedUser;
     }
     const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
         $push: {

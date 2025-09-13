@@ -87,7 +87,7 @@ const addToCart = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
     const { plant, quantity, sku } = req.body;
-
+    console.log(req.body);
     const result = await userServices.addToCart(userId, plant, quantity, sku);
     sendResponse(res, {
       statusCode: 201,
