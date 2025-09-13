@@ -76,6 +76,28 @@ const getMe = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.User.findById(id).select("-password");
     return user;
 });
+const myWishlist = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const userPlants = yield user_model_1.User.aggregate([
+        { $match: { _id: new mongoose_1.default.Types.ObjectId(id) } },
+        { $unwind: "$wishlist" },
+        {
+            $lookup: {
+                from: "plants",
+                localField: "wishlist.plant",
+                foreignField: "_id",
+                as: "wishlist.plantDetails",
+            },
+        },
+        { $unwind: "$wishlist.plantDetails" }, // flatten plant details
+        {
+            $group: {
+                _id: "$_id",
+                wishlist: { $push: "$wishlist" },
+            },
+        },
+    ]);
+    return userPlants;
+});
 const addToWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const user = yield user_model_1.User.findById(id);
@@ -93,16 +115,12 @@ const addToWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, function*
     return updatedUser;
 });
 const removeFromWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const user = yield user_model_1.User.findById(id);
-    const plantExists = (_a = user === null || user === void 0 ? void 0 : user.wishlist) === null || _a === void 0 ? void 0 : _a.some((item) => item.plant.toString() === plant);
-    if (plantExists) {
-        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "Plant is already in wishlist");
-    }
-    const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
-        $pop: {
+    console.log(id, plant);
+    console.log("i was here");
+    const updatedUser = user_model_1.User.findByIdAndUpdate(id, {
+        $pull: {
             wishlist: {
-                plant,
+                plant: plant,
             },
         },
     }, { runValidators: true, new: true });
@@ -185,4 +203,5 @@ exports.userServices = {
     myCart,
     updateCart,
     removeFromCart,
+    myWishlist,
 };

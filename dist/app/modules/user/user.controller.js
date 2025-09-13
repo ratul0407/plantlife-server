@@ -50,6 +50,17 @@ const updateUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(vo
         data: result,
     });
 }));
+const myWishlist = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("I was hit");
+    const { userId } = req.user;
+    const result = yield user_service_1.userServices.myWishlist(userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 201,
+        message: "Wishlist retrieved successfully!",
+        success: true,
+        data: result,
+    });
+}));
 const addToWishlist = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.user;
     const { plant } = req.body;
@@ -70,7 +81,7 @@ const removeFromWishlist = (0, catchAsync_1.catchAsync)((req, res, next) => __aw
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 201,
         success: true,
-        message: "Added to wishlist",
+        message: "Plant removed from wishlist",
         data: result,
     });
 }));
@@ -129,4 +140,5 @@ exports.userController = {
     myCart,
     updateCart,
     removeFromCart,
+    myWishlist,
 };

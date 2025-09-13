@@ -64,33 +64,8 @@ const getSinglePlant = (0, catchAsync_1.catchAsync)((req, res, next) => __awaite
         data: result,
     });
 }));
-const myWishlistPlant = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("I was hit");
-    const { userId } = req.user;
-    const result = yield plant_service_1.PlantService.myWishlistPlant(userId);
-    (0, sendResponse_1.sendResponse)(res, {
-        statusCode: 201,
-        message: "Wishlist retrieved successfully!",
-        success: true,
-        data: result,
-    });
-}));
-const removeFromWishlist = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
-    const { userId } = req.user;
-    const { id } = req.body;
-    yield plant_service_1.PlantService.removeFromWishlist(userId, id);
-    (0, sendResponse_1.sendResponse)(res, {
-        statusCode: 201,
-        message: "plant removed from wishlist successfully!",
-        success: true,
-        data: null,
-    });
-}));
 exports.plantController = {
     createPlant,
     getAllPlants,
     getSinglePlant,
-    myWishlistPlant,
-    removeFromWishlist,
 };
