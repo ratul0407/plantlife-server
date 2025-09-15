@@ -74,6 +74,19 @@ const addToWishlist = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
         data: result,
     });
 }));
+const addManyToWishlist = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.user;
+    console.log("I was here");
+    const { plants } = req.body;
+    console.log(plants);
+    const result = yield user_service_1.userServices.addManyToWishlist(userId, plants);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 201,
+        success: true,
+        message: "Added to wishlist",
+        data: result,
+    });
+}));
 const removeFromWishlist = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.user;
     const { plant } = req.body;
@@ -141,4 +154,5 @@ exports.userController = {
     updateCart,
     removeFromCart,
     myWishlist,
+    addManyToWishlist,
 };

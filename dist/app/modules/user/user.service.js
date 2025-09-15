@@ -24,6 +24,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userServices = void 0;
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 const mongoose_1 = __importDefault(require("mongoose"));
 const env_1 = require("../../config/env");
 const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
@@ -126,6 +127,26 @@ const removeFromWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, func
     }, { runValidators: true, new: true });
     return updatedUser;
 });
+const addManyToWishlist = (id, plants) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.findById(id).select("wishlist");
+    if (!user) {
+        return null;
+    }
+    const existingPlantIds = user === null || user === void 0 ? void 0 : user.wishlist.map((item) => item.plant.toString());
+    const newPlantsToAdd = plants.filter((plantId) => !existingPlantIds.includes(plantId));
+    if (newPlantsToAdd.length === 0) {
+        return user;
+    }
+    const objectsToAdd = newPlantsToAdd.map((plantId) => ({ plant: plantId }));
+    const updatedUser = yield user_model_1.User.findByIdAndUpdate(id, {
+        $push: {
+            wishlist: {
+                $each: objectsToAdd,
+            },
+        },
+    }, { new: true });
+    return updatedUser;
+});
 const addToCart = (id, plant, quantity, sku) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     const user = yield user_model_1.User.findById(id);
@@ -204,4 +225,5 @@ exports.userServices = {
     updateCart,
     removeFromCart,
     myWishlist,
+    addManyToWishlist,
 };

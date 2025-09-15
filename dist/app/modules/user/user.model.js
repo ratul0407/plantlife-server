@@ -18,6 +18,7 @@ const wishlistSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Plants",
         required: true,
+        unique: true,
     },
 }, {
     _id: false,
