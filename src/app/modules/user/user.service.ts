@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import mongoose from "mongoose";
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
@@ -134,6 +135,40 @@ const removeFromWishlist = async (id: string, plant: string) => {
   );
   return updatedUser;
 };
+
+const addManyToWishlist = async (id: string, plants: string[]) => {
+  const user = await User.findById(id).select("wishlist");
+
+  if (!user) {
+    return null;
+  }
+
+  const existingPlantIds = user?.wishlist!.map((item) => item.plant.toString());
+
+  const newPlantsToAdd = plants.filter(
+    (plantId) => !existingPlantIds.includes(plantId)
+  );
+
+  if (newPlantsToAdd.length === 0) {
+    return user;
+  }
+
+  const objectsToAdd = newPlantsToAdd.map((plantId) => ({ plant: plantId }));
+
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    {
+      $push: {
+        wishlist: {
+          $each: objectsToAdd,
+        },
+      },
+    },
+    { new: true }
+  );
+
+  return updatedUser;
+};
 const addToCart = async (
   id: string,
   plant: string,
@@ -235,4 +270,5 @@ export const userServices = {
   updateCart,
   removeFromCart,
   myWishlist,
+  addManyToWishlist,
 };

@@ -28,6 +28,7 @@ const wishlistSchema = new Schema<IWishlist>(
       type: Schema.Types.ObjectId,
       ref: "Plants",
       required: true,
+      unique: true,
     },
   },
   {

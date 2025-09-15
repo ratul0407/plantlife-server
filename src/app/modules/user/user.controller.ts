@@ -80,7 +80,21 @@ const addToWishlist = catchAsync(
     });
   }
 );
-
+const addManyToWishlist = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+    console.log("I was here");
+    const { plants } = req.body;
+    console.log(plants);
+    const result = await userServices.addManyToWishlist(userId, plants);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Added to wishlist",
+      data: result,
+    });
+  }
+);
 const removeFromWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
@@ -163,4 +177,5 @@ export const userController = {
   updateCart,
   removeFromCart,
   myWishlist,
+  addManyToWishlist,
 };

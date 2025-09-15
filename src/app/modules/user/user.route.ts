@@ -25,6 +25,11 @@ router.patch(
   userController.addToWishlist
 );
 router.patch(
+  "/add-many-to-wishlist",
+  checkAuth(...Object.values(Role)),
+  userController.addManyToWishlist
+);
+router.patch(
   "/remove-from-wishlist",
   checkAuth(...Object.values(Role)),
   userController.removeFromWishlist
