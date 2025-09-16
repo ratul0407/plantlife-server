@@ -113,9 +113,15 @@ const removeFromWishlist = catchAsync(
 const addToCart = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
-    const { plant, quantity, sku } = req.body;
-    console.log(req.body);
-    const result = await userServices.addToCart(userId, plant, quantity, sku);
+    const { plant, quantity, sku, img } = req.body;
+    console.log(req.body, "from user controller line 117");
+    const result = await userServices.addToCart(
+      userId,
+      plant,
+      quantity,
+      sku,
+      img
+    );
     sendResponse(res, {
       statusCode: 201,
       success: true,

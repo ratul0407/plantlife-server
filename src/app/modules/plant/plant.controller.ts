@@ -76,8 +76,25 @@ const getSinglePlant = catchAsync(
   }
 );
 
+const getLocalCartPlants = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { plants } = req.body;
+    console.log("I was here");
+    console.log(plants, "from plantController");
+    const result = await PlantService.getLocalCartPlants(plants);
+    console.log(result);
+    sendResponse(res, {
+      statusCode: 201,
+      message: "Plant created successfully!",
+      success: true,
+      data: result,
+    });
+  }
+);
+
 export const plantController = {
   createPlant,
   getAllPlants,
   getSinglePlant,
+  getLocalCartPlants,
 };

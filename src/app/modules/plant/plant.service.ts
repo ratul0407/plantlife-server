@@ -31,9 +31,13 @@ const getSinglePlant = async (id: string) => {
   const data = await Plant.findById(id);
   return data;
 };
-
+const getLocalCartPlants = async (ids: string[]) => {
+  const plants = await Plant.find({ _id: { $in: ids } });
+  return plants;
+};
 export const PlantService = {
   createPlant,
   getAllPlants,
   getSinglePlant,
+  getLocalCartPlants,
 };

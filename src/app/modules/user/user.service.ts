@@ -173,7 +173,8 @@ const addToCart = async (
   id: string,
   plant: string,
   quantity: string,
-  sku: string
+  sku: string,
+  img: string
 ) => {
   const user = await User.findById(id);
 
@@ -194,6 +195,7 @@ const addToCart = async (
           plant,
           quantity,
           sku,
+          img,
         },
       },
     },

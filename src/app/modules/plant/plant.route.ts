@@ -13,7 +13,7 @@ router.post(
   multerUpload.fields([{ name: "images" }, { name: "variantImages" }]),
   plantController.createPlant
 );
-
+router.post("/get-local-cart-plants", plantController.getLocalCartPlants);
 router.get("/all-plants", plantController.getAllPlants);
 router.get("/:id", plantController.getSinglePlant);
 export const PlantRoutes = router;

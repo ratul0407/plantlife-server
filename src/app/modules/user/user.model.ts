@@ -52,6 +52,10 @@ const cartSchema = new Schema<ICart>(
       type: String,
       required: true,
     },
+    img: {
+      type: String,
+      required: true,
+    },
   },
   { _id: false, versionKey: false, timestamps: true }
 );

@@ -15,6 +15,7 @@ export interface ICart {
   plant: Types.ObjectId;
   sku: string;
   quantity: number;
+  img: string;
 }
 
 export interface IWishlist {
