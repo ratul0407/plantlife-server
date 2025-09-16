@@ -147,7 +147,7 @@ const addManyToWishlist = (id, plants) => __awaiter(void 0, void 0, void 0, func
     }, { new: true });
     return updatedUser;
 });
-const addToCart = (id, plant, quantity, sku) => __awaiter(void 0, void 0, void 0, function* () {
+const addToCart = (id, plant, quantity, sku, img) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     const user = yield user_model_1.User.findById(id);
     const sameSku = (_a = user === null || user === void 0 ? void 0 : user.cart) === null || _a === void 0 ? void 0 : _a.some((item) => item.sku === sku);
@@ -163,6 +163,7 @@ const addToCart = (id, plant, quantity, sku) => __awaiter(void 0, void 0, void 0
                 plant,
                 quantity,
                 sku,
+                img,
             },
         },
     }, { runValidators: true, new: true });

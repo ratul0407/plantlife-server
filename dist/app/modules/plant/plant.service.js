@@ -40,8 +40,13 @@ const getSinglePlant = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield plant_model_1.Plant.findById(id);
     return data;
 });
+const getLocalCartPlants = (ids) => __awaiter(void 0, void 0, void 0, function* () {
+    const plants = yield plant_model_1.Plant.find({ _id: { $in: ids } });
+    return plants;
+});
 exports.PlantService = {
     createPlant,
     getAllPlants,
     getSinglePlant,
+    getLocalCartPlants,
 };

@@ -38,6 +38,10 @@ const cartSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    img: {
+        type: String,
+        required: true,
+    },
 }, { _id: false, versionKey: false, timestamps: true });
 const userSchema = new mongoose_1.Schema({
     name: { type: String, required: true },

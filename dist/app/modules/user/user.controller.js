@@ -100,9 +100,9 @@ const removeFromWishlist = (0, catchAsync_1.catchAsync)((req, res, next) => __aw
 }));
 const addToCart = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.user;
-    const { plant, quantity, sku } = req.body;
-    console.log(req.body);
-    const result = yield user_service_1.userServices.addToCart(userId, plant, quantity, sku);
+    const { plant, quantity, sku, img } = req.body;
+    console.log(req.body, "from user controller line 117");
+    const result = yield user_service_1.userServices.addToCart(userId, plant, quantity, sku, img);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 201,
         success: true,

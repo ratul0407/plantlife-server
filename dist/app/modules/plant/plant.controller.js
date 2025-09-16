@@ -64,8 +64,22 @@ const getSinglePlant = (0, catchAsync_1.catchAsync)((req, res, next) => __awaite
         data: result,
     });
 }));
+const getLocalCartPlants = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { plants } = req.body;
+    console.log("I was here");
+    console.log(plants, "from plantController");
+    const result = yield plant_service_1.PlantService.getLocalCartPlants(plants);
+    console.log(result);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 201,
+        message: "Plant created successfully!",
+        success: true,
+        data: result,
+    });
+}));
 exports.plantController = {
     createPlant,
     getAllPlants,
     getSinglePlant,
+    getLocalCartPlants,
 };
