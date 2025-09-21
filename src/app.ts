@@ -9,13 +9,20 @@ import passport from "passport";
 import expressSession from "express-session";
 import "./app/config/passport";
 import { envVars } from "./app/config/env";
+import MongoStore from "connect-mongo";
 const app = express();
 
+app.set("trust proxy", 1);
 app.use(
   expressSession({
     secret: envVars.EXPRESS_SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: envVars.DB_URL,
+      collectionName: "carts",
+      ttl: 60 * 60 * 24 * 10,
+    }),
   })
 );
 app.use(passport.initialize());
