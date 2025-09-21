@@ -38,27 +38,6 @@ const wishlistSchema = new Schema<IWishlist>(
   }
 );
 
-const cartSchema = new Schema<ICart>(
-  {
-    plant: {
-      type: Schema.Types.ObjectId,
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-    sku: {
-      type: String,
-      required: true,
-    },
-    img: {
-      type: String,
-      required: true,
-    },
-  },
-  { _id: false, versionKey: false, timestamps: true }
-);
 const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
@@ -77,7 +56,6 @@ const userSchema = new Schema<IUser>(
     coins: { type: Number, default: 0 },
     role: { type: String, enum: Object.values(Role), default: Role.USER },
     auths: [AuthProviderSchema],
-    cart: [cartSchema],
     reviews: { type: [Schema.Types.ObjectId], ref: "Reviews", default: [] },
 
     questions: { type: [Schema.Types.ObjectId], ref: "Questions", default: [] },

@@ -4,6 +4,7 @@ const express_1 = require("express");
 const user_route_1 = require("../modules/user/user.route");
 const auth_route_1 = require("../modules/auth/auth.route");
 const plant_route_1 = require("../modules/plant/plant.route");
+const cart_route_1 = require("../modules/cart/cart.route");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
@@ -17,6 +18,10 @@ const moduleRoutes = [
     {
         path: "/plant",
         routes: plant_route_1.PlantRoutes,
+    },
+    {
+        path: "/cart",
+        routes: cart_route_1.CartRoutes,
     },
 ];
 moduleRoutes.forEach((route) => {

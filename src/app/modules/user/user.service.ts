@@ -169,96 +169,6 @@ const addManyToWishlist = async (id: string, plants: string[]) => {
 
   return updatedUser;
 };
-const addToCart = async (
-  id: string,
-  plant: string,
-  quantity: string,
-  sku: string,
-  img: string
-) => {
-  const user = await User.findById(id);
-
-  const sameSku = user?.cart?.some((item) => item.sku === sku);
-
-  if (sameSku) {
-    const quantity = user?.cart?.find((item) => item.sku === sku)?.quantity;
-    if (quantity) {
-      return updateCart(id, sku, quantity + 1);
-    }
-  }
-
-  const updatedUser = User.findOneAndUpdate(
-    { _id: id },
-    {
-      $push: {
-        cart: {
-          plant,
-          quantity,
-          sku,
-          img,
-        },
-      },
-    },
-    { runValidators: true, new: true }
-  );
-  return updatedUser;
-};
-
-const myCart = async (id: string) => {
-  const userPlants = await User.aggregate([
-    { $match: { _id: new mongoose.Types.ObjectId(id) } },
-    { $unwind: "$cart" },
-    {
-      $lookup: {
-        from: "plants",
-        localField: "cart.plant",
-        foreignField: "_id",
-        as: "cart.plantDetails",
-      },
-    },
-    { $unwind: "$cart.plantDetails" }, // flatten plant details
-    {
-      $group: {
-        _id: "$_id",
-        cart: { $push: "$cart" },
-      },
-    },
-  ]);
-  return userPlants;
-};
-
-const updateCart = async (user: string, sku: string, quantity: number) => {
-  console.log("I was here");
-  const updatedUser = User.findByIdAndUpdate(
-    user,
-    {
-      $set: {
-        "cart.$[item].quantity": quantity,
-      },
-    },
-    {
-      new: true,
-      arrayFilters: [{ "item.sku": sku }],
-    }
-  );
-  console.log(updatedUser);
-  return updatedUser;
-};
-
-const removeFromCart = async (id: string, sku: string) => {
-  const updatedUser = User.findOneAndUpdate(
-    { _id: id },
-    {
-      $pull: {
-        cart: {
-          sku: sku,
-        },
-      },
-    },
-    { runValidators: true, new: true }
-  );
-  return updatedUser;
-};
 
 export const userServices = {
   createUser,
@@ -267,10 +177,6 @@ export const userServices = {
   updateUser,
   addToWishlist,
   removeFromWishlist,
-  addToCart,
-  myCart,
-  updateCart,
-  removeFromCart,
   myWishlist,
   addManyToWishlist,
 };

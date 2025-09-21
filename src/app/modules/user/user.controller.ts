@@ -110,78 +110,13 @@ const removeFromWishlist = catchAsync(
   }
 );
 
-const addToCart = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.user as JwtPayload;
-    const { plant, quantity, sku, img } = req.body;
-    console.log(req.body, "from user controller line 117");
-    const result = await userServices.addToCart(
-      userId,
-      plant,
-      quantity,
-      sku,
-      img
-    );
-    sendResponse(res, {
-      statusCode: 201,
-      success: true,
-      message: "Added to Cart",
-      data: result,
-    });
-  }
-);
-const myCart = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.user as JwtPayload;
-    console.log(userId);
-    const result = await userServices.myCart(userId);
-    sendResponse(res, {
-      statusCode: 201,
-      message: "Cart retrieved successfully!",
-      success: true,
-      data: result,
-    });
-  }
-);
-const updateCart = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { quantity, sku } = req.body;
-    const { userId } = req.user as JwtPayload;
-    const result = await userServices.updateCart(userId, sku, quantity);
-    sendResponse(res, {
-      statusCode: 201,
-      message: "Cart updated successfully!",
-      success: true,
-      data: result,
-    });
-  }
-);
-
-const removeFromCart = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.user as JwtPayload;
-
-    const { sku } = req.body;
-
-    const result = await userServices.removeFromCart(userId, sku);
-    sendResponse(res, {
-      statusCode: 201,
-      success: true,
-      message: "Removed from cart",
-      data: result,
-    });
-  }
-);
 export const userController = {
   createUser,
   getAllUsers,
   updateUser,
   addToWishlist,
   removeFromWishlist,
-  addToCart,
-  myCart,
-  updateCart,
-  removeFromCart,
+
   myWishlist,
   addManyToWishlist,
 };

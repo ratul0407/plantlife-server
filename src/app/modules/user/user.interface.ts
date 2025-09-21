@@ -11,12 +11,6 @@ export interface IAuthProvider {
   provider: "google" | "credentials";
   providerId: string;
 }
-export interface ICart {
-  plant: Types.ObjectId;
-  sku: string;
-  quantity: number;
-  img: string;
-}
 
 export interface IWishlist {
   plant: Types.ObjectId;
@@ -38,7 +32,6 @@ export interface IUser {
   isDeleted?: boolean;
   wishlist?: IWishlist[];
   coins?: number;
-  cart?: ICart[];
   role: Role;
   auths: IAuthProvider[];
   reviews?: Types.ObjectId[];

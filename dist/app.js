@@ -13,11 +13,18 @@ const passport_1 = __importDefault(require("passport"));
 const express_session_1 = __importDefault(require("express-session"));
 require("./app/config/passport");
 const env_1 = require("./app/config/env");
+const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const app = (0, express_1.default)();
+app.set("trust proxy", 1);
 app.use((0, express_session_1.default)({
     secret: env_1.envVars.EXPRESS_SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: connect_mongo_1.default.create({
+        mongoUrl: env_1.envVars.DB_URL,
+        collectionName: "carts",
+        ttl: 60 * 60 * 24 * 10,
+    }),
 }));
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());

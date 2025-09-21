@@ -1,6 +1,7 @@
 export interface ICartItem {
   plant: string;
   quantity: number;
+  name: string;
   sku: string;
   img: string;
   price: number;

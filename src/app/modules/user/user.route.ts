@@ -14,6 +14,7 @@ router.post(
   userController.createUser
 );
 
+router.get("/me", checkAuth(...Object.values(Role)), AuthController.getMe);
 router.get(
   "/my-wishlist",
   checkAuth(...Object.values(Role)),
@@ -35,27 +36,6 @@ router.patch(
   userController.removeFromWishlist
 );
 router.get(
-  "/my-cart",
-  checkAuth(...Object.values(Role)),
-  userController.myCart
-);
-router.patch(
-  "/add-to-cart",
-  checkAuth(...Object.values(Role)),
-  userController.addToCart
-);
-router.patch(
-  "/remove-from-cart",
-  checkAuth(...Object.values(Role)),
-  userController.removeFromCart
-);
-
-router.patch(
-  "/update-cart",
-  checkAuth(...Object.values(Role)),
-  userController.updateCart
-);
-router.get(
   "/all-users",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
   userController.getAllUsers
@@ -65,6 +45,5 @@ router.patch(
   validateRequest(updateUserZodSchema),
   userController.updateUser
 );
-router.get("/me", checkAuth(...Object.values(Role)), AuthController.getMe);
 
 export const UserRoutes = router;
