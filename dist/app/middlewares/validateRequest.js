@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateRequest = void 0;
 const validateRequest = (zodSchema) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(req.body);
         try {
             req.body = yield zodSchema.parseAsync(req.body);
             next();

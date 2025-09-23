@@ -1,7 +1,6 @@
 import { model, Schema } from "mongoose";
 import {
   IAuthProvider,
-  ICart,
   IsActive,
   IUser,
   IWishlist,

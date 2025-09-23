@@ -147,73 +147,6 @@ const addManyToWishlist = (id, plants) => __awaiter(void 0, void 0, void 0, func
     }, { new: true });
     return updatedUser;
 });
-const addToCart = (id, plant, quantity, sku, img) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
-    const user = yield user_model_1.User.findById(id);
-    const sameSku = (_a = user === null || user === void 0 ? void 0 : user.cart) === null || _a === void 0 ? void 0 : _a.some((item) => item.sku === sku);
-    if (sameSku) {
-        const quantity = (_c = (_b = user === null || user === void 0 ? void 0 : user.cart) === null || _b === void 0 ? void 0 : _b.find((item) => item.sku === sku)) === null || _c === void 0 ? void 0 : _c.quantity;
-        if (quantity) {
-            return updateCart(id, sku, quantity + 1);
-        }
-    }
-    const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
-        $push: {
-            cart: {
-                plant,
-                quantity,
-                sku,
-                img,
-            },
-        },
-    }, { runValidators: true, new: true });
-    return updatedUser;
-});
-const myCart = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const userPlants = yield user_model_1.User.aggregate([
-        { $match: { _id: new mongoose_1.default.Types.ObjectId(id) } },
-        { $unwind: "$cart" },
-        {
-            $lookup: {
-                from: "plants",
-                localField: "cart.plant",
-                foreignField: "_id",
-                as: "cart.plantDetails",
-            },
-        },
-        { $unwind: "$cart.plantDetails" }, // flatten plant details
-        {
-            $group: {
-                _id: "$_id",
-                cart: { $push: "$cart" },
-            },
-        },
-    ]);
-    return userPlants;
-});
-const updateCart = (user, sku, quantity) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("I was here");
-    const updatedUser = user_model_1.User.findByIdAndUpdate(user, {
-        $set: {
-            "cart.$[item].quantity": quantity,
-        },
-    }, {
-        new: true,
-        arrayFilters: [{ "item.sku": sku }],
-    });
-    console.log(updatedUser);
-    return updatedUser;
-});
-const removeFromCart = (id, sku) => __awaiter(void 0, void 0, void 0, function* () {
-    const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
-        $pull: {
-            cart: {
-                sku: sku,
-            },
-        },
-    }, { runValidators: true, new: true });
-    return updatedUser;
-});
 exports.userServices = {
     createUser,
     getMe,
@@ -221,10 +154,6 @@ exports.userServices = {
     updateUser,
     addToWishlist,
     removeFromWishlist,
-    addToCart,
-    myCart,
-    updateCart,
-    removeFromCart,
     myWishlist,
     addManyToWishlist,
 };

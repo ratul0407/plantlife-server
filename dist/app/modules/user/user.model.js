@@ -25,24 +25,6 @@ const wishlistSchema = new mongoose_1.Schema({
     versionKey: false,
     timestamps: { createdAt: true, updatedAt: false },
 });
-const cartSchema = new mongoose_1.Schema({
-    plant: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        required: true,
-    },
-    quantity: {
-        type: Number,
-        required: true,
-    },
-    sku: {
-        type: String,
-        required: true,
-    },
-    img: {
-        type: String,
-        required: true,
-    },
-}, { _id: false, versionKey: false, timestamps: true });
 const userSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -60,7 +42,6 @@ const userSchema = new mongoose_1.Schema({
     coins: { type: Number, default: 0 },
     role: { type: String, enum: Object.values(user_interface_1.Role), default: user_interface_1.Role.USER },
     auths: [AuthProviderSchema],
-    cart: [cartSchema],
     reviews: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Reviews", default: [] },
     questions: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Questions", default: [] },
 }, {
