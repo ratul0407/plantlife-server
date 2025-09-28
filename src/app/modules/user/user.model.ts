@@ -1,11 +1,5 @@
 import { model, Schema } from "mongoose";
-import {
-  IAuthProvider,
-  IsActive,
-  IUser,
-  IWishlist,
-  Role,
-} from "./user.interface";
+import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
 
 const AuthProviderSchema = new Schema<IAuthProvider>(
   {
@@ -19,22 +13,6 @@ const AuthProviderSchema = new Schema<IAuthProvider>(
     },
   },
   { _id: false, timestamps: true, versionKey: false }
-);
-
-const wishlistSchema = new Schema<IWishlist>(
-  {
-    plant: {
-      type: Schema.Types.ObjectId,
-      ref: "Plants",
-      required: true,
-      unique: true,
-    },
-  },
-  {
-    _id: false,
-    versionKey: false,
-    timestamps: { createdAt: true, updatedAt: false },
-  }
 );
 
 const userSchema = new Schema<IUser>(
@@ -51,7 +29,6 @@ const userSchema = new Schema<IUser>(
       default: IsActive.ACTIVE,
     },
     isDeleted: { type: Boolean, default: false },
-    wishlist: [wishlistSchema],
     coins: { type: Number, default: 0 },
     role: { type: String, enum: Object.values(Role), default: Role.USER },
     auths: [AuthProviderSchema],

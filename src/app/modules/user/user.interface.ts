@@ -12,9 +12,6 @@ export interface IAuthProvider {
   providerId: string;
 }
 
-export interface IWishlist {
-  plant: Types.ObjectId;
-}
 export enum IsActive {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
@@ -30,7 +27,7 @@ export interface IUser {
   isVerified?: boolean;
   isActive: IsActive;
   isDeleted?: boolean;
-  wishlist?: IWishlist[];
+
   coins?: number;
   role: Role;
   auths: IAuthProvider[];

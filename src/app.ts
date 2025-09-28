@@ -9,7 +9,10 @@ import passport from "passport";
 import expressSession from "express-session";
 import "./app/config/passport";
 import { envVars } from "./app/config/env";
-import MongoStore from "connect-mongo";
+import { RedisStore } from "connect-redis";
+import redisClient from "./app/config/redis.config";
+import { v4 } from "uuid";
+
 const app = express();
 
 app.set("trust proxy", 1);
@@ -29,11 +32,7 @@ app.use(
     secret: envVars.EXPRESS_SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: envVars.DB_URL,
-      collectionName: "sessions",
-      ttl: 60 * 60 * 24 * 10,
-    }),
+    store: new RedisStore({ client: redisClient }),
     cookie: {
       httpOnly: true,
       secure: true,
@@ -49,8 +48,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  console.log("Session ID", req.sessionID);
-  console.log("Session Data", req.session);
+  if (req.session.guestId && !req.user) {
+    req.session.guestId = v4();
+  }
   next();
 });
 app.use("/api/v1", router);
