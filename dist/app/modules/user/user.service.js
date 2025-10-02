@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -24,8 +25,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userServices = void 0;
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-const mongoose_1 = __importDefault(require("mongoose"));
 const env_1 = require("../../config/env");
 const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
 const userTokens_1 = require("../../utils/userTokens");
@@ -77,83 +76,9 @@ const getMe = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.User.findById(id).select("-password");
     return user;
 });
-const myWishlist = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const userPlants = yield user_model_1.User.aggregate([
-        { $match: { _id: new mongoose_1.default.Types.ObjectId(id) } },
-        { $unwind: "$wishlist" },
-        {
-            $lookup: {
-                from: "plants",
-                localField: "wishlist.plant",
-                foreignField: "_id",
-                as: "wishlist.plantDetails",
-            },
-        },
-        { $unwind: "$wishlist.plantDetails" }, // flatten plant details
-        {
-            $group: {
-                _id: "$_id",
-                wishlist: { $push: "$wishlist" },
-            },
-        },
-    ]);
-    return userPlants;
-});
-const addToWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const user = yield user_model_1.User.findById(id);
-    const plantExists = (_a = user === null || user === void 0 ? void 0 : user.wishlist) === null || _a === void 0 ? void 0 : _a.some((item) => item.plant.toString() === plant);
-    if (plantExists) {
-        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "Plant is already in wishlist");
-    }
-    const updatedUser = user_model_1.User.findOneAndUpdate({ _id: id }, {
-        $push: {
-            wishlist: {
-                plant,
-            },
-        },
-    }, { runValidators: true, new: true });
-    return updatedUser;
-});
-const removeFromWishlist = (id, plant) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(id, plant);
-    console.log("i was here");
-    const updatedUser = user_model_1.User.findByIdAndUpdate(id, {
-        $pull: {
-            wishlist: {
-                plant: plant,
-            },
-        },
-    }, { runValidators: true, new: true });
-    return updatedUser;
-});
-const addManyToWishlist = (id, plants) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.findById(id).select("wishlist");
-    if (!user) {
-        return null;
-    }
-    const existingPlantIds = user === null || user === void 0 ? void 0 : user.wishlist.map((item) => item.plant.toString());
-    const newPlantsToAdd = plants.filter((plantId) => !existingPlantIds.includes(plantId));
-    if (newPlantsToAdd.length === 0) {
-        return user;
-    }
-    const objectsToAdd = newPlantsToAdd.map((plantId) => ({ plant: plantId }));
-    const updatedUser = yield user_model_1.User.findByIdAndUpdate(id, {
-        $push: {
-            wishlist: {
-                $each: objectsToAdd,
-            },
-        },
-    }, { new: true });
-    return updatedUser;
-});
 exports.userServices = {
     createUser,
     getMe,
     getAllUsers,
     updateUser,
-    addToWishlist,
-    removeFromWishlist,
-    myWishlist,
-    addManyToWishlist,
 };

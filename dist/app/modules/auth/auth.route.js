@@ -26,7 +26,6 @@ router.post("/logOut", auth_controller_1.AuthController.logOut);
 router.post("/reset-password", (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.Role)), auth_controller_1.AuthController.resetPassword);
 router.get("/google", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const redirect = req.query.redirect || "/";
-    console.log(redirect);
     passport_1.default.authenticate("google", {
         scope: ["profile", "email"],
         state: redirect,

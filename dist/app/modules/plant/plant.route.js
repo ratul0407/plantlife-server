@@ -9,6 +9,7 @@ const checkAuth_1 = require("../../middlewares/checkAuth");
 const router = (0, express_1.Router)();
 router.get("/all-plants", plant_controller_1.plantController.getAllPlants);
 router.post("/add-plants", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), multer_config_1.multerUpload.fields([{ name: "images" }, { name: "variantImages" }]), plant_controller_1.plantController.createPlant);
+// router.get("/more", )
 router.post("/get-local-cart-plants", plant_controller_1.plantController.getLocalCartPlants);
 router.get("/:id", plant_controller_1.plantController.getSinglePlant);
 exports.PlantRoutes = router;

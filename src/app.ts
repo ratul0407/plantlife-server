@@ -11,7 +11,7 @@ import "./app/config/passport";
 import { envVars } from "./app/config/env";
 import { RedisStore } from "connect-redis";
 import redisClient from "./app/config/redis.config";
-import { v4 } from "uuid";
+// import { v4 } from "uuid";
 
 const app = express();
 

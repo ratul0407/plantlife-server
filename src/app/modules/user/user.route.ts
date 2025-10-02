@@ -15,26 +15,7 @@ router.post(
 );
 
 router.get("/me", checkAuth(...Object.values(Role)), AuthController.getMe);
-router.get(
-  "/my-wishlist",
-  checkAuth(...Object.values(Role)),
-  userController.myWishlist
-);
-router.patch(
-  "/add-to-wishlist",
-  checkAuth(...Object.values(Role)),
-  userController.addToWishlist
-);
-router.patch(
-  "/add-many-to-wishlist",
-  checkAuth(...Object.values(Role)),
-  userController.addManyToWishlist
-);
-router.patch(
-  "/remove-from-wishlist",
-  checkAuth(...Object.values(Role)),
-  userController.removeFromWishlist
-);
+
 router.get(
   "/all-users",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),

@@ -14,13 +14,11 @@ const plant_model_1 = require("./plant.model");
 const plant_constants_1 = require("./plant.constants");
 const queryBuilder_1 = require("../../utils/queryBuilder");
 const createPlant = (plant) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(plant);
     const createdPlant = yield plant_model_1.Plant.create(plant);
     return createdPlant;
 });
 const getAllPlants = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const queryBuilder = new queryBuilder_1.QueryBuilder(plant_model_1.Plant.find(), query);
-    console.log(query);
     const tours = yield queryBuilder
         .search(plant_constants_1.plantSearchableFields)
         .filter()

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import mongoose from "mongoose";
+
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
 import { createUserTokens } from "../../utils/userTokens";
@@ -74,109 +74,9 @@ const getMe = async (id: string) => {
   return user;
 };
 
-const myWishlist = async (id: string) => {
-  const userPlants = await User.aggregate([
-    { $match: { _id: new mongoose.Types.ObjectId(id) } },
-    { $unwind: "$wishlist" },
-    {
-      $lookup: {
-        from: "plants",
-        localField: "wishlist.plant",
-        foreignField: "_id",
-        as: "wishlist.plantDetails",
-      },
-    },
-    { $unwind: "$wishlist.plantDetails" }, // flatten plant details
-    {
-      $group: {
-        _id: "$_id",
-        wishlist: { $push: "$wishlist" },
-      },
-    },
-  ]);
-  return userPlants;
-};
-const addToWishlist = async (id: string, plant: string) => {
-  const user = await User.findById(id);
-  const plantExists = user?.wishlist?.some(
-    (item) => item.plant.toString() === plant
-  );
-
-  if (plantExists) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Plant is already in wishlist");
-  }
-  const updatedUser = User.findOneAndUpdate(
-    { _id: id },
-    {
-      $push: {
-        wishlist: {
-          plant,
-        },
-      },
-    },
-    { runValidators: true, new: true }
-  );
-  return updatedUser;
-};
-const removeFromWishlist = async (id: string, plant: string) => {
-  console.log(id, plant);
-
-  console.log("i was here");
-  const updatedUser = User.findByIdAndUpdate(
-    id,
-    {
-      $pull: {
-        wishlist: {
-          plant: plant,
-        },
-      },
-    },
-    { runValidators: true, new: true }
-  );
-  return updatedUser;
-};
-
-const addManyToWishlist = async (id: string, plants: string[]) => {
-  const user = await User.findById(id).select("wishlist");
-
-  if (!user) {
-    return null;
-  }
-
-  const existingPlantIds = user?.wishlist!.map((item) => item.plant.toString());
-
-  const newPlantsToAdd = plants.filter(
-    (plantId) => !existingPlantIds.includes(plantId)
-  );
-
-  if (newPlantsToAdd.length === 0) {
-    return user;
-  }
-
-  const objectsToAdd = newPlantsToAdd.map((plantId) => ({ plant: plantId }));
-
-  const updatedUser = await User.findByIdAndUpdate(
-    id,
-    {
-      $push: {
-        wishlist: {
-          $each: objectsToAdd,
-        },
-      },
-    },
-    { new: true }
-  );
-
-  return updatedUser;
-};
-
 export const userServices = {
   createUser,
   getMe,
   getAllUsers,
   updateUser,
-  addToWishlist,
-  removeFromWishlist,
-  myWishlist,
-  addManyToWishlist,
 };

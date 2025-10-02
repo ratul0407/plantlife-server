@@ -52,69 +52,8 @@ const updateUser = catchAsync(
   }
 );
 
-const myWishlist = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.user as JwtPayload;
-    const result = await userServices.myWishlist(userId);
-    sendResponse(res, {
-      statusCode: 201,
-      message: "Wishlist retrieved successfully!",
-      success: true,
-      data: result,
-    });
-  }
-);
-const addToWishlist = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.user as JwtPayload;
-    const { plant } = req.body;
-
-    const result = await userServices.addToWishlist(userId, plant);
-    sendResponse(res, {
-      statusCode: 201,
-      success: true,
-      message: "Added to wishlist",
-      data: result,
-    });
-  }
-);
-const addManyToWishlist = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.user as JwtPayload;
-
-    const { plants } = req.body;
-
-    const result = await userServices.addManyToWishlist(userId, plants);
-    sendResponse(res, {
-      statusCode: 201,
-      success: true,
-      message: "Added to wishlist",
-      data: result,
-    });
-  }
-);
-const removeFromWishlist = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.user as JwtPayload;
-    const { plant } = req.body;
-
-    const result = await userServices.removeFromWishlist(userId, plant);
-    sendResponse(res, {
-      statusCode: 201,
-      success: true,
-      message: "Plant removed from wishlist",
-      data: result,
-    });
-  }
-);
-
 export const userController = {
   createUser,
   getAllUsers,
   updateUser,
-  addToWishlist,
-  removeFromWishlist,
-
-  myWishlist,
-  addManyToWishlist,
 };

@@ -13,7 +13,9 @@ const passport_1 = __importDefault(require("passport"));
 const express_session_1 = __importDefault(require("express-session"));
 require("./app/config/passport");
 const env_1 = require("./app/config/env");
-const connect_mongo_1 = __importDefault(require("connect-mongo"));
+const connect_redis_1 = require("connect-redis");
+const redis_config_1 = __importDefault(require("./app/config/redis.config"));
+// import { v4 } from "uuid";
 const app = (0, express_1.default)();
 app.set("trust proxy", 1);
 app.use((0, cookie_parser_1.default)());
@@ -29,11 +31,7 @@ app.use((0, express_session_1.default)({
     secret: env_1.envVars.EXPRESS_SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: connect_mongo_1.default.create({
-        mongoUrl: env_1.envVars.DB_URL,
-        collectionName: "sessions",
-        ttl: 60 * 60 * 24 * 10,
-    }),
+    store: new connect_redis_1.RedisStore({ client: redis_config_1.default }),
     cookie: {
         httpOnly: true,
         secure: true,
@@ -45,11 +43,6 @@ app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use((req, res, next) => {
-    console.log("Session ID", req.sessionID);
-    console.log("Session Data", req.session);
-    next();
-});
 app.use("/api/v1", routes_1.default);
 app.get("/", (req, res) => {
     res.status(200).json({

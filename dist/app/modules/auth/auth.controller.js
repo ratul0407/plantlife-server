@@ -43,8 +43,8 @@ const credentialsLogin = (0, catchAsync_1.catchAsync)((req, res, next) => __awai
             return next(new AppError_1.default(401, "User does not exist"));
         }
         const userTokens = yield (0, userTokens_1.createUserTokens)(user);
-        console.log(userTokens);
         const _a = user.toObject(), { password: pass } = _a, rest = __rest(_a, ["password"]);
+        req.user = userTokens.accessToken;
         (0, setAuthCookie_1.setAuthCookie)(res, userTokens);
         (0, sendResponse_1.sendResponse)(res, {
             success: true,
