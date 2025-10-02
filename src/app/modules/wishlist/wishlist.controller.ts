@@ -17,6 +17,20 @@ const getLocalWishlist = catchAsync(
     });
   }
 );
+
+const getUserWishlist = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+    const result = await wishlistServices.getUserWishlist(userId);
+    console.log(result, "result front wishlist controller");
+    sendResponse(res, {
+      success: true,
+      statusCode: 201,
+      message: "Added to wishlist successfully!",
+      data: result,
+    });
+  }
+);
 const addToWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
@@ -48,8 +62,24 @@ const mergeWishlist = catchAsync(
   }
 );
 
+const deleteWishlist = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    const id = req.body.plantId;
+    const result = await wishlistServices.deleteWishlist(id);
+    sendResponse(res, {
+      success: true,
+      statusCode: 201,
+      message: "Deleted from wishlist successfully!",
+      data: result,
+    });
+  }
+);
+
 export const wishlistController = {
   getLocalWishlist,
+  deleteWishlist,
+  getUserWishlist,
   addToWishlist,
   mergeWishlist,
 };

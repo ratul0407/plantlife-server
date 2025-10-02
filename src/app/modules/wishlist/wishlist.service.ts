@@ -4,10 +4,15 @@ import { Plant } from "../plant/plant.model";
 import { IWishlist } from "./wishlist.interface";
 import { Wishlist } from "./wishlist.model";
 
+const getUserWishlist = async (userId: string) => {
+  const wishlist = await Wishlist.find({ userId: userId });
+  return wishlist;
+};
 const getLocalWishlist = async (plants: string[]) => {
-  console.log(plants);
-  const wishlistPlants = await Plant.find({ _id: { $in: plants } });
-  console.log(wishlistPlants);
+  const wishlistPlants = await Plant.find({ _id: { $in: plants } }).sort(
+    "-createdAt"
+  );
+
   return wishlistPlants;
 };
 const mergeWishlist = async (
@@ -16,36 +21,34 @@ const mergeWishlist = async (
 ) => {
   const dbWishlist = await Wishlist.find({ userId: userId });
 
-  console.log(localWishlist, "local wishlist");
   const dbPlants = dbWishlist.map((item) => item.plantId.toString());
 
-  console.log(dbPlants, "db plants");
   const newPlants = localWishlist.filter(
     (item) => !dbPlants.includes(item.plantId)
   );
-  console.log(newPlants, newPlants.length, "from new Plants");
+
   if (newPlants.length > 0) {
     const toInsert = newPlants.map((item) => ({
       userId: userId,
       plantId: item.plantId,
     }));
-    console.log(toInsert, "from to insert");
     await Wishlist.insertMany(toInsert);
     return [];
   }
 };
 const addToWishlist = async (plant: IWishlist) => {
+  console.log("I was here");
   const wishlist = await Wishlist.create(plant);
   return wishlist;
 };
-// const mergeWishlist = async (wishlist: any, userId: string) => {
-//   const userWishlist = await Wishlist.find({ userId: userId });
-//   console.log(userWishlist);
 
-//   return {};
-// };
+const deleteWishlist = async (plantId: string) => {
+  await Wishlist.deleteOne({ plantId: plantId });
+};
 export const wishlistServices = {
+  getUserWishlist,
   getLocalWishlist,
   addToWishlist,
+  deleteWishlist,
   mergeWishlist,
 };
