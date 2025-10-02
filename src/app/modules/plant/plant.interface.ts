@@ -25,7 +25,7 @@ export interface IPlant {
   description: string;
   category: Category;
   inStock: boolean;
-  variants: [IPlantVariant];
+  variants: IPlantVariant[];
   additionalImages: string[];
   tags?: string[];
   careInstructions?: string;

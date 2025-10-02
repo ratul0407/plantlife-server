@@ -4,13 +4,12 @@ import { plantSearchableFields } from "./plant.constants";
 import { QueryBuilder } from "../../utils/queryBuilder";
 
 const createPlant = async (plant: IPlant) => {
-  console.log(plant);
   const createdPlant = await Plant.create(plant);
   return createdPlant;
 };
 const getAllPlants = async (query: Record<string, string>) => {
   const queryBuilder = new QueryBuilder(Plant.find(), query);
-  console.log(query);
+
   const tours = await queryBuilder
     .search(plantSearchableFields)
     .filter()
@@ -35,6 +34,7 @@ const getLocalCartPlants = async (ids: string[]) => {
   const plants = await Plant.find({ _id: { $in: ids } });
   return plants;
 };
+
 export const PlantService = {
   createPlant,
   getAllPlants,

@@ -50,7 +50,7 @@ const createPlant = catchAsync(
 const getAllPlants = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
-    console.log(query);
+
     const result = await PlantService.getAllPlants(
       query as Record<string, string>
     );
@@ -64,8 +64,6 @@ const getAllPlants = catchAsync(
 );
 const getSinglePlant = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log("I was here");
-    console.log(req.params);
     const { id } = req.params;
     const result = await PlantService.getSinglePlant(id);
     sendResponse(res, {
@@ -80,10 +78,9 @@ const getSinglePlant = catchAsync(
 const getLocalCartPlants = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { plants } = req.body;
-    console.log("I was here");
-    console.log(plants, "from plantController");
+
     const result = await PlantService.getLocalCartPlants(plants);
-    console.log(result);
+
     sendResponse(res, {
       statusCode: 201,
       message: "Plant created successfully!",

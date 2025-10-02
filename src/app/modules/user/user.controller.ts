@@ -54,7 +54,6 @@ const updateUser = catchAsync(
 
 const myWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log("I was hit");
     const { userId } = req.user as JwtPayload;
     const result = await userServices.myWishlist(userId);
     sendResponse(res, {
@@ -69,8 +68,7 @@ const addToWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
     const { plant } = req.body;
-    console.log(userId);
-    console.log("I was here");
+
     const result = await userServices.addToWishlist(userId, plant);
     sendResponse(res, {
       statusCode: 201,
@@ -83,9 +81,9 @@ const addToWishlist = catchAsync(
 const addManyToWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
-    console.log("I was here");
+
     const { plants } = req.body;
-    console.log(plants);
+
     const result = await userServices.addManyToWishlist(userId, plants);
     sendResponse(res, {
       statusCode: 201,

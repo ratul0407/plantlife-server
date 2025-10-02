@@ -24,8 +24,9 @@ const credentialsLogin = catchAsync(
       }
 
       const userTokens = await createUserTokens(user);
-      console.log(userTokens);
+
       const { password: pass, ...rest } = user.toObject();
+      req.user = userTokens.accessToken;
       setAuthCookie(res, userTokens);
       sendResponse(res, {
         success: true,

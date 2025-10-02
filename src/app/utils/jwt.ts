@@ -4,7 +4,6 @@ export const generateToken = (
   secret: string,
   expiresIn: string
 ) => {
-  console.log(expiresIn);
   const token = jwt.sign(payload, secret, { expiresIn } as SignOptions);
   return token;
 };

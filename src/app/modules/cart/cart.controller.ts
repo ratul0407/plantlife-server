@@ -15,9 +15,7 @@ const addToCart = catchAsync(
     const existingItem = session.cart.find((item) => item.sku === sku);
 
     if (existingItem) {
-      console.log(existingItem.quantity);
       existingItem.quantity += quantity;
-      console.log(existingItem, quantity);
     } else {
       session.cart.push({
         name,

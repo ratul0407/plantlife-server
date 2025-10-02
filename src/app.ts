@@ -47,12 +47,6 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  if (req.session.guestId && !req.user) {
-    req.session.guestId = v4();
-  }
-  next();
-});
 app.use("/api/v1", router);
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({

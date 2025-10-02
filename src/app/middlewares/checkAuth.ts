@@ -9,6 +9,7 @@ export const checkAuth =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const accessToken = req.cookies.accessToken;
+
       if (!accessToken) {
         throw new AppError(403, "No AccessToken received");
       }
@@ -17,6 +18,7 @@ export const checkAuth =
         envVars.JWT_ACCESS_SECRET
       ) as JwtPayload;
 
+      console.log(verifiedToken);
       const isUserExists = await User.findOne({ email: verifiedToken.email });
       if (!isUserExists) {
         throw new AppError(httpStatus.BAD_REQUEST, "User does not exists");
