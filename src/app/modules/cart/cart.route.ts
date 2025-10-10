@@ -1,12 +1,17 @@
-// import { Router } from "express";
-// // import { CartController } from "./cart.controller";
-// import { validateRequest } from "../../middlewares/validateRequest";
-// import { addToCartZodSchema } from "./cart.validation";
+import { Router } from "express";
+import { validateRequest } from "../../middlewares/validateRequest";
+import { addToCartZodSchema } from "./cart.validation";
+import { CartController } from "./cart.controller";
+import { checkAuth } from "../../middlewares/checkAuth";
+import { Role } from "../user/user.interface";
 
-// const router = Router();
+const router = Router();
 
-// // router.post("/", validateRequest(addToCartZodSchema), CartController.addToCart);
-// // router.get("/", CartController.getCart);
-// // router.post("/remove", CartController.removeFromCart);
-// // router.post("/update", CartController.updateCart);
-// // export const CartRoutes = router;
+router.post(
+  "/",
+  checkAuth(...Object.values(Role)),
+  validateRequest(addToCartZodSchema),
+  CartController.addToCart
+);
+
+export const CartRoutes = router;

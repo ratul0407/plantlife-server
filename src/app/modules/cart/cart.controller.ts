@@ -1,42 +1,22 @@
-// /* eslint-disable @typescript-eslint/no-unused-vars */
-// import { NextFunction, Request, Response } from "express";
-// import { catchAsync } from "../../utils/catchAsync";
-// import { sendResponse } from "../../utils/sendResponse";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { NextFunction, Request, Response } from "express";
+import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
+import { CartService } from "./cart.service";
+import { JwtPayload } from "jsonwebtoken";
 
-// const addToCart = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const { plant, quantity, sku, img, price, stock, name } = req.body;
-//     const session = req.session;
-//     if (!session.cart) {
-//       req.session.cart = [];
-//     }
-
-//     if (!session.cart) return;
-//     const existingItem = session.cart.find((item) => item.sku === sku);
-
-//     if (existingItem) {
-//       existingItem.quantity += quantity;
-//     } else {
-//       session.cart.push({
-//         name,
-//         plant,
-//         quantity,
-//         sku,
-//         img,
-//         stock,
-//         price,
-//         createdAt: new Date(),
-//         updatedAt: new Date(),
-//       });
-//     }
-//     sendResponse(res, {
-//       statusCode: 201,
-//       success: true,
-//       message: "Added to Cart successfully!",
-//       data: req.session.cart,
-//     });
-//   }
-// );
+const addToCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const {userId} = req.user as JwtPayload;
+    const result = await CartService.addToCart(req.body, userId);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Added to Cart successfully!",
+      data: result,
+    });
+  }
+);
 
 // const getCart = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
@@ -82,9 +62,9 @@
 //   }
 // );
 
-// export const CartController = {
-//   addToCart,
-//   getCart,
-//   removeFromCart,
-//   updateCart,
-// };
+export const CartController = {
+  addToCart,
+  //   getCart,
+  //   removeFromCart,
+  //   updateCart,
+};

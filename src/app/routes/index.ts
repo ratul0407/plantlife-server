@@ -4,6 +4,7 @@ import { authRoutes } from "../modules/auth/auth.route";
 import { PlantRoutes } from "../modules/plant/plant.route";
 // import { CartRoutes } from "../modules/cart/cart.route";
 import { WishlistRoutes } from "../modules/wishlist/wishlist.route";
+import { CartRoutes } from "../modules/cart/cart.route";
 
 const router = Router();
 
@@ -23,6 +24,10 @@ const moduleRoutes = [
   {
     path: "/wishlist",
     routes: WishlistRoutes,
+  },
+  {
+    path: "/cart",
+    routes: CartRoutes,
   },
 ];
 

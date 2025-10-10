@@ -1,11 +1,11 @@
 export interface ICartItem {
-  plant: string;
+  plantId: string;
+  userId: string;
   quantity: number;
   name: string;
   sku: string;
   img: string;
   price: number;
-  stock: number;
   createdAt: Date;
   updatedAt: Date;
 }
