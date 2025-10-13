@@ -44,7 +44,9 @@ const createPlant = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(v
 }));
 const getAllPlants = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const query = req.query;
+    console.log(req.query, "from get all plants");
     const result = yield plant_service_1.PlantService.getAllPlants(query);
+    console.log(result);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 201,
         message: "Plants retrieved successfully!",

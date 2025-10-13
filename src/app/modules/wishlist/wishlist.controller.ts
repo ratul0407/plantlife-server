@@ -8,11 +8,11 @@ import { JwtPayload } from "jsonwebtoken";
 const getLocalWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await wishlistServices.getLocalWishlist(req.body);
-    console.log(result, "result front wishlist controller");
+
     sendResponse(res, {
       success: true,
       statusCode: 201,
-      message: "Added to wishlist successfully!",
+      message: "Retrieved local wishlist successfully!",
       data: result,
     });
   }
@@ -22,11 +22,11 @@ const getUserWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
     const result = await wishlistServices.getUserWishlist(userId);
-    console.log(result, "result front wishlist controller");
+
     sendResponse(res, {
       success: true,
       statusCode: 201,
-      message: "Added to wishlist successfully!",
+      message: "Retrieved user wishlist successfully!",
       data: result,
     });
   }
@@ -56,7 +56,7 @@ const mergeWishlist = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: 201,
-      message: "Added to wishlist successfully!",
+      message: "Merged wishlist successfully!",
       data: result,
     });
   }
@@ -64,7 +64,6 @@ const mergeWishlist = catchAsync(
 
 const deleteWishlist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
     const id = req.body.plantId;
     const result = await wishlistServices.deleteWishlist(id);
     sendResponse(res, {

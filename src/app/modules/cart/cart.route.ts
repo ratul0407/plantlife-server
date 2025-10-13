@@ -7,8 +7,9 @@ import { Role } from "../user/user.interface";
 
 const router = Router();
 
+router.post("/get-cart", CartController.getCartPlants);
 router.post(
-  "/",
+  "/add-to-cart",
   checkAuth(...Object.values(Role)),
   validateRequest(addToCartZodSchema),
   CartController.addToCart
