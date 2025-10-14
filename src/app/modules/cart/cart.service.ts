@@ -9,7 +9,8 @@ const addToCart = async (cart: ICartItem) => {
     const newQuantity = isExist.quantity + cart.quantity;
     const result = await Cart.findOneAndUpdate(
       { sku: cart.sku },
-      { quantity: newQuantity }
+      { quantity: newQuantity },
+      { new: true }
     );
     return result;
   }
@@ -54,14 +55,20 @@ const getCartPlants = async (cartPlants: ICartItem[]) => {
   return results.filter(Boolean);
 };
 
-const updateQuantity = async (newQuantity: number, cartId: string) => {
-  const result = await Cart.findByIdAndUpdate(cartId, {
-    quantity: newQuantity,
-  });
+const updateQuantity = async (
+  newQuantity: number,
+  userId: string,
+  sku: string
+) => {
+  const result = await Cart.findOneAndUpdate(
+    { sku: sku, userId: userId },
+    { quantity: newQuantity },
+    { new: true }
+  );
   return result;
 };
-const deleteCartItem = async (cartId: string) => {
-  const result = await Cart.findByIdAndDelete(cartId);
+const deleteCartItem = async (sku: string, userId: string) => {
+  const result = await Cart.findOneAndDelete({ sku, userId });
   return result;
 };
 export const CartService = {

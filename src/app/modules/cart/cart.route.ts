@@ -15,4 +15,15 @@ router.post(
   CartController.addToCart
 );
 
+router.post(
+  "/update-quantity",
+  checkAuth(...Object.values(Role)),
+  CartController.updateQuantity
+);
+
+router.delete(
+  "/delete-item",
+  checkAuth(...Object.values(Role)),
+  CartController.deleteCartItem
+);
 export const CartRoutes = router;

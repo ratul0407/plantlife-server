@@ -24,13 +24,41 @@ const addToCart = catchAsync(
 
 const getCartPlants = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
     const result = await CartService.getCartPlants(req.body);
     sendResponse(res, {
       statusCode: 201,
       success: true,
       message: "retrieved user cart successfully!",
       data: result,
+    });
+  }
+);
+
+const updateQuantity = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { newQuantity, sku } = req.body;
+    const { userId } = req.user as JwtPayload;
+    const result = await CartService.updateQuantity(newQuantity, userId, sku);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Plant quantity updated",
+      data: result,
+    });
+  }
+);
+
+const deleteCartItem = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+    const { sku } = req.body;
+    console.log(sku, "I was here  ");
+    const result = await CartService.deleteCartItem(sku, userId);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Cart deleted successfully!",
+      data: null,
     });
   }
 );
@@ -81,6 +109,8 @@ const getCartPlants = catchAsync(
 export const CartController = {
   addToCart,
   getCartPlants,
+  updateQuantity,
+  deleteCartItem,
   //   getCart,
   //   removeFromCart,
   //   updateCart,
