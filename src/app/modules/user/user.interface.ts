@@ -27,7 +27,6 @@ export interface IUser {
   isVerified?: boolean;
   isActive: IsActive;
   isDeleted?: boolean;
-
   coins?: number;
   role: Role;
   auths: IAuthProvider[];

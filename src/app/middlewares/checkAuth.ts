@@ -18,7 +18,6 @@ export const checkAuth =
         envVars.JWT_ACCESS_SECRET
       ) as JwtPayload;
 
-      console.log(verifiedToken);
       const isUserExists = await User.findOne({ email: verifiedToken.email });
       if (!isUserExists) {
         throw new AppError(httpStatus.BAD_REQUEST, "User does not exists");

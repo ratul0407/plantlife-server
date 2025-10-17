@@ -41,10 +41,12 @@ const getCartPlants = async (cartPlants: ICartItem[]) => {
         const variant = plant[0].variants[0];
         return {
           name: plant[0].name,
+          plantId: plant[0]._id,
           sku: item.sku,
           price: variant.price,
           image: variant.image,
           quantity: item.quantity,
+          variant: variant.variantName,
         };
       }
 
