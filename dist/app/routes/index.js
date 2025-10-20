@@ -7,6 +7,7 @@ const plant_route_1 = require("../modules/plant/plant.route");
 // import { CartRoutes } from "../modules/cart/cart.route";
 const wishlist_route_1 = require("../modules/wishlist/wishlist.route");
 const cart_route_1 = require("../modules/cart/cart.route");
+const analytics_route_1 = require("../modules/analytics/analytics.route");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
@@ -28,6 +29,10 @@ const moduleRoutes = [
     {
         path: "/cart",
         routes: cart_route_1.CartRoutes,
+    },
+    {
+        path: "/analytics",
+        routes: analytics_route_1.AnalyticRoutes,
     },
 ];
 moduleRoutes.forEach((route) => {

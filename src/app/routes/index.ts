@@ -5,6 +5,8 @@ import { PlantRoutes } from "../modules/plant/plant.route";
 // import { CartRoutes } from "../modules/cart/cart.route";
 import { WishlistRoutes } from "../modules/wishlist/wishlist.route";
 import { CartRoutes } from "../modules/cart/cart.route";
+import { AnalyticRoutes } from "../modules/analytics/analytics.route";
+import { OrderRoutes } from "../modules/orders/order.route";
 
 const router = Router();
 
@@ -28,6 +30,14 @@ const moduleRoutes = [
   {
     path: "/cart",
     routes: CartRoutes,
+  },
+  {
+    path: "/analytics",
+    routes: AnalyticRoutes,
+  },
+  {
+    path: "/order",
+    routes: OrderRoutes,
   },
 ];
 

@@ -50,7 +50,7 @@ const createPlant = catchAsync(
 const getAllPlants = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
-
+    console.log(query);
     const result = await PlantService.getAllPlants(
       query as Record<string, string>
     );

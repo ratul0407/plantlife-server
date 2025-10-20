@@ -73,9 +73,14 @@ const deleteCartItem = async (sku: string, userId: string) => {
   const result = await Cart.findOneAndDelete({ sku, userId });
   return result;
 };
+const deleteCart = async (userId: string) => {
+  const result = await Cart.deleteMany({ userId });
+  return result;
+};
 export const CartService = {
   addToCart,
   getCartPlants,
   updateQuantity,
   deleteCartItem,
+  deleteCart,
 };

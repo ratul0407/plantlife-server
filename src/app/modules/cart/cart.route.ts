@@ -26,4 +26,10 @@ router.delete(
   checkAuth(...Object.values(Role)),
   CartController.deleteCartItem
 );
+
+router.delete(
+  "/delete-cart",
+  checkAuth(...Object.values(Role)),
+  CartConitroller.deleteCart
+);
 export const CartRoutes = router;

@@ -52,8 +52,8 @@ const deleteCartItem = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
     const { sku } = req.body;
-    console.log(sku, "I was here  ");
-    const result = await CartService.deleteCartItem(sku, userId);
+
+    await CartService.deleteCartItem(sku, userId);
     sendResponse(res, {
       statusCode: 201,
       success: true,
@@ -62,56 +62,24 @@ const deleteCartItem = catchAsync(
     });
   }
 );
-// const getCart = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     sendResponse(res, {
-//       statusCode: 201,
-//       success: true,
-//       message: "Cart retrieved successfully!",
-//       data: req.session.cart,
-//     });
-//   }
-// );
 
-// const removeFromCart = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const { sku } = req.body;
-//     if (req.session.cart) {
-//       req.session.cart = req.session.cart.filter((item) => !(item.sku === sku));
-//     }
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: 201,
-//       message: "Plant Removed from cart!",
-//       data: req.session.cart,
-//     });
-//   }
-// );
+const deleteCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
 
-// const updateCart = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const { sku, quantity } = req.body;
-
-//     if (req.session.cart) {
-//       req.session.cart.filter((item) =>
-//         item.sku === sku ? (item.quantity = quantity) : item?.quantity
-//       );
-//     }
-//     sendResponse(res, {
-//       statusCode: 201,
-//       success: true,
-//       message: "Cart retrieved successfully!",
-//       data: req.session.cart,
-//     });
-//   }
-// );
-
+    await CartService.deleteCart(userId);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Cart deleted successfully!",
+      data: null,
+    });
+  }
+);
 export const CartController = {
   addToCart,
   getCartPlants,
   updateQuantity,
   deleteCartItem,
-  //   getCart,
-  //   removeFromCart,
-  //   updateCart,
+  deleteCart,
 };
