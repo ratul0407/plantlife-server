@@ -30,6 +30,6 @@ router.delete(
 router.delete(
   "/delete-cart",
   checkAuth(...Object.values(Role)),
-  CartConitroller.deleteCart
+  CartController.deleteCart
 );
 export const CartRoutes = router;

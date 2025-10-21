@@ -5,10 +5,10 @@ import { Role } from "../user/user.interface";
 
 const router = Router();
 
+router.get("/", checkAuth(...Object.values(Role)), OrderController.getOrder);
 router.post(
   "/",
   checkAuth(...Object.values(Role)),
   OrderController.createOrder
 );
-
 export const OrderRoutes = router;

@@ -8,6 +8,7 @@ const plant_route_1 = require("../modules/plant/plant.route");
 const wishlist_route_1 = require("../modules/wishlist/wishlist.route");
 const cart_route_1 = require("../modules/cart/cart.route");
 const analytics_route_1 = require("../modules/analytics/analytics.route");
+const order_route_1 = require("../modules/orders/order.route");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
@@ -33,6 +34,10 @@ const moduleRoutes = [
     {
         path: "/analytics",
         routes: analytics_route_1.AnalyticRoutes,
+    },
+    {
+        path: "/order",
+        routes: order_route_1.OrderRoutes,
     },
 ];
 moduleRoutes.forEach((route) => {

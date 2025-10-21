@@ -26,6 +26,19 @@ const createOrder = catchAsync(
   }
 );
 
+const getOrder = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+    const result = await OrderService.getOrder(userId);
+    sendResponse(res, {
+      data: result,
+      success: true,
+      statusCode: 200,
+      message: "Orders retrieved successfully",
+    });
+  }
+);
 export const OrderController = {
   createOrder,
+  getOrder,
 };
