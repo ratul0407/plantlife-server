@@ -1,5 +1,12 @@
 import { model, Schema } from "mongoose";
-import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
+import {
+  Division,
+  IAddress,
+  IAuthProvider,
+  IsActive,
+  IUser,
+  Role,
+} from "./user.interface";
 
 const AuthProviderSchema = new Schema<IAuthProvider>(
   {
@@ -15,6 +22,19 @@ const AuthProviderSchema = new Schema<IAuthProvider>(
   { _id: false, timestamps: true, versionKey: false }
 );
 
+const addressSchema = new Schema<IAddress>(
+  {
+    division: { type: String, enum: Object.values(Division), required: true },
+    district: { type: String, required: true },
+    subDistrict: { type: String, required: true },
+    zip: { type: Number, required: true },
+    streetAddress: { type: String, required: true },
+  },
+  {
+    versionKey: "false",
+    _id: false,
+  }
+);
 const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
@@ -32,9 +52,7 @@ const userSchema = new Schema<IUser>(
     coins: { type: Number, default: 0 },
     role: { type: String, enum: Object.values(Role), default: Role.USER },
     auths: [AuthProviderSchema],
-    reviews: { type: [Schema.Types.ObjectId], ref: "Reviews", default: [] },
-
-    questions: { type: [Schema.Types.ObjectId], ref: "Questions", default: [] },
+    address: { type: addressSchema, required: true },
   },
   {
     timestamps: true,

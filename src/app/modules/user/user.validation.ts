@@ -30,10 +30,15 @@ export const updateUserZodSchema = z.object({
     .max(32, { message: "Password cannot be more than 32 characters long!" })
     .optional(),
   picture: z.url().optional(),
-  wishlist: z.string().optional(),
   coins: z.number().optional(),
   role: z.enum([Role.ADMIN, Role.STAFF]).optional(),
-  reviews: z.string().optional(),
-  recentlyViewed: z.string().optional(),
-  questions: z.string().optional(),
+  address: z
+    .object({
+      division: z.string().optional(),
+      district: z.string().optional(),
+      subDistrict: z.string().optional(),
+      zip: z.number().optional(),
+      streetAddress: z.string().optional(),
+    })
+    .optional(),
 });

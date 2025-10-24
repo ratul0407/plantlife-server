@@ -11,7 +11,23 @@ export interface IAuthProvider {
   provider: "google" | "credentials";
   providerId: string;
 }
-
+export enum Division {
+  DHAKA = "DHAKA",
+  CHITTAGONG = "CHITTAGONG",
+  KHULNA = "KHULNA",
+  RAJSHAHI = "RAJSHAHI",
+  SYLHET = "SYLHET",
+  BARISAL = "BARISAL",
+  RANGPUR = "RANGPUR",
+  MYMENSINGH = "MYMENSINGH",
+}
+export interface IAddress {
+  division: string;
+  district: Division;
+  subDistrict: string;
+  zip: number;
+  streetAddress: string;
+}
 export enum IsActive {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
@@ -30,6 +46,5 @@ export interface IUser {
   coins?: number;
   role: Role;
   auths: IAuthProvider[];
-  reviews?: Types.ObjectId[];
-  questions?: Types.ObjectId[];
+  address: IAddress;
 }
