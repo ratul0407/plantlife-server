@@ -7,6 +7,11 @@ import { Role } from "../user/user.interface";
 
 const router = Router();
 
+router.get(
+  "/my-cart",
+  checkAuth(...Object.values(Role)),
+  CartController.myCart
+);
 router.post("/get-cart", CartController.getCartPlants);
 router.post(
   "/add-to-cart",
@@ -14,7 +19,11 @@ router.post(
   validateRequest(addToCartZodSchema),
   CartController.addToCart
 );
-
+router.post(
+  "/merge",
+  checkAuth(...Object.values(Role)),
+  CartController.mergeCart
+);
 router.post(
   "/update-quantity",
   checkAuth(...Object.values(Role)),

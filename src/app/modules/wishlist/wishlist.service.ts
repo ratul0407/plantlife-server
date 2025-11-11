@@ -32,8 +32,9 @@ const mergeWishlist = async (
       userId: userId,
       plantId: item.plantId,
     }));
-    await Wishlist.insertMany(toInsert);
-    return [];
+    console.log("I was here");
+    console.log("to Insert", toInsert);
+    return await Wishlist.insertMany(toInsert);
   }
 };
 const addToWishlist = async (plant: IWishlist) => {

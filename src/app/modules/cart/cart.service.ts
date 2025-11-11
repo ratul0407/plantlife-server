@@ -18,6 +18,10 @@ const addToCart = async (cart: ICartItem) => {
   return result;
 };
 
+const myCart = async (userId: string) => {
+  const cart = await Cart.find({ userId: userId });
+  return cart;
+};
 const getCartPlants = async (cartPlants: ICartItem[]) => {
   const results = await Promise.all(
     cartPlants.map(async (item) => {
@@ -77,10 +81,31 @@ const deleteCart = async (userId: string) => {
   const result = await Cart.deleteMany({ userId });
   return result;
 };
+
+const mergeCart = async (userId: string, cartPlants: Partial<ICartItem>[]) => {
+  const dbCart = await Cart.find({ userId: userId });
+  const dbPlants = dbCart.map((item) => item.plantId.toString());
+
+  const newPlants = cartPlants.filter(
+    (item) => !dbPlants.includes(item.plantId)
+  );
+
+  if (newPlants.length > 0) {
+    const toInsert = newPlants.map((item) => ({
+      userId: userId,
+      plantId: item.plantId,
+      sku: item.sku,
+      quantity: item.quantity,
+    }));
+    return await Cart.insertMany(toInsert);
+  }
+};
 export const CartService = {
+  myCart,
   addToCart,
   getCartPlants,
   updateQuantity,
   deleteCartItem,
   deleteCart,
+  mergeCart,
 };

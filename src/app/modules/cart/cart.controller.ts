@@ -5,6 +5,18 @@ import { sendResponse } from "../../utils/sendResponse";
 import { CartService } from "./cart.service";
 import { JwtPayload } from "jsonwebtoken";
 
+const myCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+    const result = await CartService.myCart(userId);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Retrieved user cart successfully!",
+      data: result,
+    });
+  }
+);
 const addToCart = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.user as JwtPayload;
@@ -76,10 +88,24 @@ const deleteCart = catchAsync(
     });
   }
 );
+const mergeCart = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userId } = req.user as JwtPayload;
+    const result = await CartService.mergeCart(userId, req.body);
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Cart merged successfully!",
+      data: result,
+    });
+  }
+);
 export const CartController = {
   addToCart,
   getCartPlants,
   updateQuantity,
   deleteCartItem,
   deleteCart,
+  mergeCart,
+  myCart,
 };
