@@ -87,7 +87,7 @@ const mergeCart = async (userId: string, cartPlants: Partial<ICartItem>[]) => {
   const dbPlants = dbCart.map((item) => item.plantId.toString());
 
   const newPlants = cartPlants.filter(
-    (item) => !dbPlants.includes(item.plantId)
+    (item) => !dbPlants.includes(item.plantId as string)
   );
 
   if (newPlants.length > 0) {

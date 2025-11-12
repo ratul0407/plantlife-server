@@ -9,7 +9,6 @@ const createPlant = async (plant: IPlant) => {
 };
 const getAllPlants = async (query: Record<string, string>) => {
   const queryBuilder = new QueryBuilder(Plant.find(), query);
-
   const tours = await queryBuilder
     .search(plantSearchableFields)
     .filter()
@@ -21,6 +20,7 @@ const getAllPlants = async (query: Record<string, string>) => {
     tours.build(),
     queryBuilder.getMeta(),
   ]);
+
   return {
     data,
     meta,

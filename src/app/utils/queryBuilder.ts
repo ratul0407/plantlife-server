@@ -25,6 +25,7 @@ export class QueryBuilder<T> {
   }
 
   search(searchableField: string[]): this {
+    if (this.query.searchTerm === undefined) return this;
     const searchTerm = this.query.searchTerm || "";
 
     const searchQuery = {
