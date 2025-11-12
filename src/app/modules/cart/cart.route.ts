@@ -7,11 +7,14 @@ import { Role } from "../user/user.interface";
 
 const router = Router();
 
+//get user cart
 router.get(
   "/my-cart",
   checkAuth(...Object.values(Role)),
   CartController.myCart
 );
+
+// get plant details for added cart plant
 router.post("/get-cart", CartController.getCartPlants);
 router.post(
   "/add-to-cart",

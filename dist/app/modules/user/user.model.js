@@ -13,6 +13,16 @@ const AuthProviderSchema = new mongoose_1.Schema({
         required: true,
     },
 }, { _id: false, timestamps: true, versionKey: false });
+const addressSchema = new mongoose_1.Schema({
+    division: { type: String, enum: Object.values(user_interface_1.Division), required: true },
+    district: { type: String, required: true },
+    subDistrict: { type: String, required: true },
+    zip: { type: Number, required: true },
+    streetAddress: { type: String, required: true },
+}, {
+    versionKey: "false",
+    _id: false,
+});
 const userSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -29,8 +39,7 @@ const userSchema = new mongoose_1.Schema({
     coins: { type: Number, default: 0 },
     role: { type: String, enum: Object.values(user_interface_1.Role), default: user_interface_1.Role.USER },
     auths: [AuthProviderSchema],
-    reviews: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Reviews", default: [] },
-    questions: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Questions", default: [] },
+    address: { type: addressSchema, required: true },
 }, {
     timestamps: true,
     versionKey: false,

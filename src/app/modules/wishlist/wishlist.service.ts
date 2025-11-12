@@ -9,10 +9,9 @@ const getUserWishlist = async (userId: string) => {
   return wishlist;
 };
 const getLocalWishlist = async (plants: string[]) => {
-  const wishlistPlants = await Plant.find({ _id: { $in: plants } })
-    .select("name category createdAt  variants")
-    .sort("-createdAt");
-
+  const wishlistPlants = await Plant.find({ _id: { $in: plants } }).select(
+    "name category createdAt  variants"
+  );
   return wishlistPlants;
 };
 const mergeWishlist = async (

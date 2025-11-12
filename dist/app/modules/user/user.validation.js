@@ -33,10 +33,15 @@ exports.updateUserZodSchema = zod_1.default.object({
         .max(32, { message: "Password cannot be more than 32 characters long!" })
         .optional(),
     picture: zod_1.default.url().optional(),
-    wishlist: zod_1.default.string().optional(),
     coins: zod_1.default.number().optional(),
     role: zod_1.default.enum([user_interface_1.Role.ADMIN, user_interface_1.Role.STAFF]).optional(),
-    reviews: zod_1.default.string().optional(),
-    recentlyViewed: zod_1.default.string().optional(),
-    questions: zod_1.default.string().optional(),
+    address: zod_1.default
+        .object({
+        division: zod_1.default.string().optional(),
+        district: zod_1.default.string().optional(),
+        subDistrict: zod_1.default.string().optional(),
+        zip: zod_1.default.number().optional(),
+        streetAddress: zod_1.default.string().optional(),
+    })
+        .optional(),
 });
